@@ -2,354 +2,103 @@
 
     <!-- Welcome / Page Intro -->
     <section>
-    <h1 class="text-2xl font-bold text-gray-900">
-      Welcome back, Rohit! 👋
-    </h1>
+        <h1 class="text-2xl font-bold text-gray-900">
+            Welcome back, Rohit! 👋
+        </h1>
 
-    <p class="mt-1 text-gray-500">
-      Here's what's happening with your shop today.
-    </p>
+        <p class="mt-1 text-gray-500">
+            Here's what's happening with your shop today.
+        </p>
     </section>
 
-   <!-- Dashboard content will come here -->
-   <!-- Dashboard Stats -->
+    <!-- Dashboard Stats -->
     <section class="grid grid-cols-2 gap-3 md:gap-5">
 
-    <!-- Current Walk-In Queue -->
-    <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-        <div class="flex items-center gap-4">
+        <!-- Current Walk-In Queue -->
+        <app-dashboard-card icon="👥" title="Current Walk-In Queue" value="8" actionText="View Queue →">
+        </app-dashboard-card>
 
-        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-50 text-2xl">
-            👥
-        </div>
+        <!-- Current Online Queue -->
+        <app-dashboard-card icon="📱" title="Current Online Queue" value="5" actionText="View Queue →">
+        </app-dashboard-card>
 
-        <div>
-            <p class="text-sm font-medium text-gray-500">
-            Current Walk-In Queue
-            </p>
+        <!-- Today's Appointments -->
+        <app-dashboard-card icon="📅" title="Today's Appointments" value="24" actionText="View Appointments →">
+        </app-dashboard-card>
 
-            <p class="mt-1 text-3xl font-bold text-gray-900">
-            8
-            </p>
+        <!-- Today's Revenue -->
+        <app-dashboard-card icon="₹" title="Today's Revenue" value="₹18,750" subtitle="↑ 12.5% vs yesterday"
+            actionText="View Revenue →">
+        </app-dashboard-card>
 
-            <button class="mt-2 text-sm font-semibold text-indigo-600">
-            View Queue →
-            </button>
-        </div>
-
-        </div>
-    </div>
-
-    <!-- Current Online Queue -->
-    <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-        <div class="flex items-center gap-4">
-
-        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-2xl">
-            📱
-        </div>
-
-        <div>
-            <p class="text-sm font-medium text-gray-500">
-            Current Online Queue
-            </p>
-
-            <p class="mt-1 text-3xl font-bold text-gray-900">
-            5
-            </p>
-
-            <button class="mt-2 text-sm font-semibold text-indigo-600">
-            View Queue →
-            </button>
-        </div>
-
-        </div>
-    </div>
-
-    <!-- Today's Appointments -->
-    <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-        <div class="flex items-center gap-4">
-
-        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-green-50 text-2xl">
-            📅
-        </div>
-
-        <div>
-            <p class="text-sm font-medium text-gray-500">
-            Today's Appointments
-            </p>
-
-            <p class="mt-1 text-3xl font-bold text-gray-900">
-            24
-            </p>
-
-            <button class="mt-2 text-sm font-semibold text-indigo-600">
-            View Appointments →
-            </button>
-        </div>
-
-        </div>
-    </div>
-
-    <!-- Today's Revenue -->
-    <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-        <div class="flex items-center gap-4">
-
-        <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-50 text-2xl">
-            ₹
-        </div>
-
-        <div>
-            <p class="text-sm font-medium text-gray-500">
-            Today's Revenue
-            </p>
-
-            <p class="mt-1 text-3xl font-bold text-gray-900">
-            ₹18,750
-            </p>
-
-            <p class="mt-2 text-sm font-medium text-green-600">
-            ↑ 12.5% vs yesterday
-            </p>
-        </div>
-
-        </div>
-    </div>
-
-    <!-- Average Rating -->
-    <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-  <div class="flex items-center gap-4">
-
-    <div
-      class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-2xl"
-    >
-      ☆
-    </div>
-
-    <div>
-      <p class="text-sm font-medium text-gray-500">
-        Avg. Rating
-      </p>
-
-      <p class="mt-1 text-3xl font-bold text-gray-900">
-        4.8
-      </p>
-
-      <div class="mt-1 text-sm text-blue-600">
-        ★★★★★
-      </div>
-
-      <p class="mt-1 text-sm text-gray-500">
-        From 186 reviews
-      </p>
-    </div>
-
-  </div>
-    </div>
+        <!-- Average Rating -->
+        <app-dashboard-card icon="☆" title="Avg. Rating" value="4.8" subtitle="★★★★★ From 186 reviews">
+        </app-dashboard-card>
 
     </section>
 
     <!-- Barbers Status -->
     <section class="rounded-2xl border border-gray-200 bg-white shadow-sm">
 
-  <!-- Section Header -->
-  <div class="flex items-center justify-between border-b border-gray-200 px-6 py-5">
-    <h2 class="text-xl font-bold text-gray-900">
-      Barbers Status
-    </h2>
+        <!-- Section Header -->
+        <div class="flex items-center justify-between border-b border-gray-200 px-6 py-5">
+            <h2 class="text-xl font-bold text-gray-900">
+                Barbers Status
+            </h2>
 
-    <button class="font-semibold text-indigo-600 hover:text-indigo-700">
-      View All →
-    </button>
-  </div>
+            <button class="font-semibold text-indigo-600 hover:text-indigo-700">
+                View All →
+            </button>
+        </div>
 
-  <!-- Table -->
-  <div class="overflow-x-auto">
-    <table class="w-full text-left">
-
-      <thead class="border-b border-gray-200 text-sm text-gray-500">
-        <tr>
-          <th class="px-6 py-4 font-semibold">Barber Name</th>
-          <th class="px-6 py-4 font-semibold">Shift Started at</th>
-          <th class="px-6 py-4 font-semibold">Today's Services</th>
-          <th class="px-6 py-4 font-semibold">Individual Rating</th>
-          <th class="px-6 py-4 font-semibold">Current Status</th>
-        </tr>
-      </thead>
-
-      <tbody class="divide-y divide-gray-100">
-
-        <!-- Rohit -->
-        <tr>
-          <td class="px-6 py-4">
-            <div class="flex items-center gap-3">
-              <div class="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 font-semibold text-indigo-600">
-                RS
-              </div>
-              <span class="font-medium text-gray-900">Rohit Sharma</span>
-            </div>
-          </td>
-
-          <td class="px-6 py-4 text-gray-600">09:00 AM</td>
-          <td class="px-6 py-4 text-gray-900">7</td>
-
-          <td class="px-6 py-4">
-            <span class="font-semibold text-gray-900">4.9</span>
-            <span class="ml-2 text-blue-600">★★★★★</span>
-          </td>
-
-          <td class="px-6 py-4 whitespace-nowrap">
-            <span class="rounded-xl bg-green-50 px-4 py-2 text-sm font-semibold text-green-700">
-              ● Working
-            </span>
-          </td>
-        </tr>
-
-        <!-- Vikram -->
-        <tr>
-          <td class="px-6 py-4">
-            <div class="flex items-center gap-3">
-              <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 font-semibold text-blue-600">
-                VP
-              </div>
-              <span class="font-medium text-gray-900">Vikram Patel</span>
-            </div>
-          </td>
-
-          <td class="px-6 py-4 text-gray-600">09:15 AM</td>
-          <td class="px-6 py-4 text-gray-900">5</td>
-
-          <td class="px-6 py-4">
-            <span class="font-semibold text-gray-900">4.8</span>
-            <span class="ml-2 text-blue-600">★★★★★</span>
-          </td>
-
-          <td class="px-6 py-4 whitespace-nowrap">
-            <span class="rounded-xl bg-green-50 px-4 py-2 text-sm font-semibold text-green-700">
-              ● Working
-            </span>
-          </td>
-        </tr>
-
-        <!-- Sandeep -->
-        <tr>
-          <td class="px-6 py-4">
-            <div class="flex items-center gap-3">
-              <div class="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 font-semibold text-orange-600">
-                SS
-              </div>
-              <span class="font-medium text-gray-900">Sandeep Sharma</span>
-            </div>
-          </td>
-
-          <td class="px-6 py-4 text-gray-600">10:00 AM</td>
-          <td class="px-6 py-4 text-gray-900">6</td>
-
-          <td class="px-6 py-4">
-            <span class="font-semibold text-gray-900">4.7</span>
-            <span class="ml-2 text-blue-600">★★★★★</span>
-          </td>
-
-          <td class="px-6 py-4 whitespace-nowrap">
-            <span class="rounded-xl bg-orange-50 px-4 py-2 text-sm font-semibold text-orange-700">
-              ● Break
-            </span>
-          </td>
-        </tr>
-
-      </tbody>
-    </table>
-  </div>
+        <!-- Table -->
+        <app-dashboard-table [columns]="barberColumns" [data]="barbers"></app-dashboard-table>
 
     </section>
 
     <!-- Quick Actions -->
     <section class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm md:p-6">
 
-  <h2 class="mb-4 text-lg font-bold text-gray-900 md:mb-5 md:text-xl">
-    Quick Actions
-  </h2>
+        <h2 class="mb-4 text-lg font-bold text-gray-900 md:mb-5 md:text-xl">
+            Quick Actions
+        </h2>
 
-  <div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+        <div class="grid grid-cols-4 gap-2.5 md:grid-cols-4 md:gap-4">
 
-    <!-- Add Services -->
-    <button
-      class="flex min-h-[120px] flex-col items-center justify-center gap-2 rounded-xl border border-gray-200 p-3 transition hover:bg-indigo-50 md:min-h-0 md:gap-3 md:rounded-2xl md:p-5"
-    >
-      <span class="text-2xl md:text-3xl">☷+</span>
-      <span class="text-sm font-medium text-gray-700 md:text-base">Add Services</span>
-    </button>
+            <!-- Add Services -->
+            <app-dashboard-card [isActionCard]="true" icon="☷+" title="Add Services">
+            </app-dashboard-card>
 
-    <!-- Today's Appointments -->
-<button
-  class="flex min-h-[120px] flex-col items-center justify-center gap-2 rounded-xl border border-gray-200 p-3 transition hover:bg-green-50 md:min-h-0 md:gap-3 md:rounded-2xl md:p-5"
->
-  <span class="text-2xl md:text-3xl">📅</span>
+            <!-- Today's Appointments -->
+            <app-dashboard-card [isActionCard]="true" icon="📅" title="Today's Appointments">
+            </app-dashboard-card>
 
-  <span class="text-sm font-medium text-gray-700 md:text-base">
-    Today's Appointments
-  </span>
-</button>
+            <!-- Add Barber -->
+            <app-dashboard-card [isActionCard]="true" icon="✂️" title="Add Barber">
+            </app-dashboard-card>
 
-    <!-- Add Barber -->
-    <button
-      class="flex min-h-[120px] flex-col items-center justify-center gap-2 rounded-xl border border-gray-200 p-3 transition hover:bg-pink-50 md:min-h-0 md:gap-3 md:rounded-2xl md:p-5"
-    >
-      <span class="text-2xl md:text-3xl">✂️</span>
-      <span class="text-sm font-medium text-gray-700 md:text-base">Add Barber</span>
-    </button>
+            <!-- Revenue -->
+            <app-dashboard-card [isActionCard]="true" icon="₹+" title="Revenue+">
+            </app-dashboard-card>
 
-    <!-- Revenue+ -->
-    <button
-      class="flex min-h-[120px] flex-col items-center justify-center gap-2 rounded-xl border border-gray-200 p-3 transition hover:bg-orange-50 md:min-h-0 md:gap-3 md:rounded-2xl md:p-5"
-    >
-      <span class="text-2xl md:text-3xl">₹+</span>
-      <span class="text-sm font-medium text-gray-700 md:text-base">Revenue+</span>
-    </button>
+            <!-- Manage Services -->
+            <app-dashboard-card [isActionCard]="true" icon="✂️" title="Manage Services">
+            </app-dashboard-card>
 
-    <!-- Manage Services -->
-    <button
-      class="flex min-h-[120px] flex-col items-center justify-center gap-2 rounded-xl border border-gray-200 p-3 transition hover:bg-pink-50 md:min-h-0 md:gap-3 md:rounded-2xl md:p-5"
-    >
-      <span class="text-2xl md:text-3xl">✂️</span>
-      <span class="text-sm font-medium text-gray-700 md:text-base">
-        Manage Services
-      </span>
-    </button>
+            <!-- Manage Barbers -->
+            <app-dashboard-card [isActionCard]="true" icon="💈" title="Manage Barbers">
+            </app-dashboard-card>
 
-    <!-- Manage Barbers -->
-    <button
-      class="flex min-h-[120px] flex-col items-center justify-center gap-2 rounded-xl border border-gray-200 p-3 transition hover:bg-cyan-50 md:min-h-0 md:gap-3 md:rounded-2xl md:p-5"
-    >
-      <span class="text-2xl md:text-3xl">💈</span>
-      <span class="text-sm font-medium text-gray-700 md:text-base">
-        Manage Barbers
-      </span>
-    </button>
+            <!-- Send Notification -->
+            <app-dashboard-card [isActionCard]="true" icon="🔔" title="Send Notification">
+            </app-dashboard-card>
 
-    <!-- Send Notification -->
-    <button
-      class="flex min-h-[120px] flex-col items-center justify-center gap-2 rounded-xl border border-gray-200 p-3 transition hover:bg-indigo-50 md:min-h-0 md:gap-3 md:rounded-2xl md:p-5"
-    >
-      <span class="text-2xl md:text-3xl">🔔</span>
-      <span class="text-sm font-medium text-gray-700 md:text-base">
-        Send Notification
-      </span>
-    </button>
+            <!-- View Reports -->
+            <app-dashboard-card [isActionCard]="true" icon="📊" title="View Reports">
+            </app-dashboard-card>
 
-    <!-- View Reports -->
-    <button
-      class="flex min-h-[120px] flex-col items-center justify-center gap-2 rounded-xl border border-gray-200 p-3 transition hover:bg-blue-50 md:min-h-0 md:gap-3 md:rounded-2xl md:p-5"
-    >
-      <span class="text-2xl md:text-3xl">📊</span>
-      <span class="text-sm font-medium text-gray-700 md:text-base">
-        View Reports
-      </span>
-    </button>
-
-  </div>
+        </div>
 
     </section>
-
-    
 
 </div>

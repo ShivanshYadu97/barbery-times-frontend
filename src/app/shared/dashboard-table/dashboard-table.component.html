@@ -1,0 +1,84 @@
+<div class="w-full overflow-x-auto">
+  <table class="w-full text-center">
+
+    <!-- Table Header -->
+    <thead class="border-b border-gray-200 text-[9px] text-gray-500 md:text-sm">
+      <tr>
+        <th
+          *ngFor="let column of columns"
+          class="px-2 py-3 text-center font-semibold md:px-6 md:py-4"
+        >
+          {{ column.label }}
+        </th>
+      </tr>
+    </thead>
+
+    <!-- Table Body -->
+    <tbody class="divide-y divide-gray-100">
+
+      <tr *ngFor="let row of data">
+
+        <td
+          *ngFor="let column of columns"
+          class="px-2 py-3 text-center text-[10px] md:px-6 md:py-4 md:text-sm"
+        >
+
+          <!-- Barber -->
+          <div
+            *ngIf="column.type === 'barber'"
+            class="flex items-center justify-start gap-1.5 md:gap-3"
+          >
+            <div
+              class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[8px] font-semibold text-indigo-600 md:h-10 md:w-10 md:text-sm"
+            >
+              {{ row.initials }}
+            </div>
+
+            <span class="whitespace-nowrap font-medium text-gray-900">
+              {{ row[column.key] }}
+            </span>
+          </div>
+
+          <!-- Normal Text -->
+          <span
+            *ngIf="column.type === 'text'"
+            class="text-gray-600"
+          >
+            {{ row[column.key] }}
+          </span>
+
+          <!-- Rating -->
+          <div
+            *ngIf="column.type === 'rating'"
+            class="whitespace-nowrap text-center"
+          >
+            <span class="font-semibold text-gray-900">
+              {{ row[column.key] }}
+            </span>
+
+            <span class="ml-1 text-[8px] text-blue-600 md:ml-2 md:text-base">
+              ★★★★★
+            </span>
+          </div>
+
+          <!-- Status -->
+          <span
+            *ngIf="column.type === 'status'"
+            class="inline-block whitespace-nowrap rounded-lg px-2 py-1 text-[9px] font-semibold md:rounded-xl md:px-4 md:py-2 md:text-sm"
+            [ngClass]="{
+              'bg-green-50 text-green-700': row[column.key] === 'Working',
+              'bg-orange-50 text-orange-700': row[column.key] === 'Break',
+              'bg-indigo-50 text-indigo-700': row[column.key] === 'Day Off'
+            }"
+          >
+            ● {{ row[column.key] }}
+          </span>
+
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+</div>

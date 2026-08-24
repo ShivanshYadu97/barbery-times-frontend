@@ -7,6 +7,8 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { BarberAdminLayoutComponent } from './layout/barber-admin-layout/barber-admin-layout.component';
 import { MobileHeaderComponent } from '../shared/mobile-header/mobile-header.component';
+import { DashboardCardComponent } from '../shared/dashboard-card/dashboard-card.component';
+import { DashboardTableComponent } from '../shared/dashboard-table/dashboard-table.component';
 
 
 @NgModule({
@@ -15,7 +17,9 @@ import { MobileHeaderComponent } from '../shared/mobile-header/mobile-header.com
     SidebarComponent,
     HeaderComponent,
     BarberAdminLayoutComponent,
-    MobileHeaderComponent
+    MobileHeaderComponent,
+    DashboardCardComponent,
+    DashboardTableComponent
   ],
   imports: [
     CommonModule,
