@@ -1,25 +1,26 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { BarberAdminRoutingModule } from './barber-admin-routing.module';
+import { BarberRoutingModule } from './barber-routing.module';
+
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { SidebarComponent } from './layout/sidebar/sidebar.component';
+import { BarberLayoutComponent } from './layout/barber-layout/barber-layout.component';
 import { HeaderComponent } from './layout/header/header.component';
-import { BarberAdminLayoutComponent } from './layout/barber-admin-layout/barber-admin-layout.component';
+import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    SidebarComponent,
+    BarberLayoutComponent,
     HeaderComponent,
-    BarberAdminLayoutComponent,
+    SidebarComponent
   ],
   imports: [
     CommonModule,
-    BarberAdminRoutingModule,
+    BarberRoutingModule,
     SharedModule
-  ]
+]
 })
-export class BarberAdminModule { }
+export class BarberModule {}

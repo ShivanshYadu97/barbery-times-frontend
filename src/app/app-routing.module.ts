@@ -13,6 +13,13 @@ const routes: Routes = [
     path: '',
     redirectTo: 'barber-admin/dashboard',
     pathMatch: 'full'
+  },
+  {
+    path: 'barber',
+    loadChildren: () =>
+      import('./barber/barber.module').then(
+        m => m.BarberModule
+      )
   }
 ];
 

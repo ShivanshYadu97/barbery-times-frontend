@@ -1,0 +1,32 @@
+<div class="min-h-screen bg-gray-100">
+
+  <!-- Mobile Header -->
+  <div class="lg:hidden">
+    <app-mobile-header></app-mobile-header>
+  </div>
+
+  <div class="flex">
+
+    <!-- Desktop Sidebar -->
+    <div class="hidden lg:block">
+      <app-sidebar></app-sidebar>
+    </div>
+
+    <!-- Main Content -->
+    <div class="min-w-0 flex-1">
+
+      <!-- Desktop Header -->
+      <div class="hidden lg:block">
+        <app-header></app-header>
+      </div>
+
+      <!-- Changing Pages -->
+      <main class="p-4 md:p-6">
+        <router-outlet></router-outlet>
+      </main>
+
+    </div>
+
+  </div>
+
+</div>

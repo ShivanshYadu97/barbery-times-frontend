@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardTableComponent } from './shared/dashboard-table/dashboard-table.component';
 import { CommonModule } from '@angular/common';
+import { BarberModule } from './barber/barber.module';
 // import { DashboardCardComponent } from './shared/dashboard-card/dashboard-card.component';
 // import { MobileHeaderComponent } from './shared/mobile-header/mobile-header.component';
 
@@ -17,7 +18,8 @@ import { CommonModule } from '@angular/common';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    CommonModule
+    CommonModule,
+    BarberModule
   ],
   providers: [],
   bootstrap: [AppComponent]
