@@ -1,0 +1,22 @@
+<div class="min-h-screen flex bg-gray-100">
+
+  <!-- Sidebar: Desktop only -->
+  <app-sidebar class="hidden md:block"></app-sidebar>
+
+  <!-- Main Content -->
+  <div class="flex-1">
+
+    <!-- Mobile Header: Mobile only -->
+    <app-mobile-header class="md:hidden"></app-mobile-header>
+
+    <!-- Desktop Header: Desktop only -->
+    <app-header class="hidden md:block"></app-header>
+
+    <!-- Changing Pages -->
+    <main class="p-4 md:p-6">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+
+</div>

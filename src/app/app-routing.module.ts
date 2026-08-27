@@ -7,24 +7,31 @@ const routes: Routes = [
     loadChildren: () =>
       import('./barber-admin/barber-admin.module').then(
         (m) => m.BarberAdminModule
-      )
+      ),
   },
   {
     path: '',
     redirectTo: 'barber-admin/dashboard',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'barber',
     loadChildren: () =>
       import('./barber/barber.module').then(
-        m => m.BarberModule
-      )
-  }
+        (m) => m.BarberModule
+      ),
+  },
+  {
+    path: 'customer',
+    loadChildren: () =>
+      import('./customer/customer.module').then(
+        (m) => m.CustomerModule
+      ),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -8,14 +8,19 @@ import { Component, Input } from '@angular/core';
 export class DashboardCardComponent {
 
   @Input() icon: string = '';
+
   @Input() title: string = '';
 
   // Stat card ke liye
   @Input() value: string | number = '';
+
   @Input() subtitle: string = '';
+
   @Input() actionText: string = '';
 
   // Quick Action card ke liye
   @Input() isActionCard: boolean = false;
+
+  @Input() description: string = '';
 
 }
