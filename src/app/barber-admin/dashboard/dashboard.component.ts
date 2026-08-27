@@ -49,4 +49,10 @@ export class DashboardComponent {
     }
   ];
 
+  isShopOpen: boolean = false;
+
+  toggleShopStatus(): void {
+    this.isShopOpen = !this.isShopOpen;
+  }
+
 }

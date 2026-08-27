@@ -11,6 +11,56 @@
         </p>
     </section>
 
+    <!-- Shop Status Toggle -->
+    <section class="mb-4 md:mb-5">
+
+  <!-- Label -->
+  <p
+    class="mb-1.5 text-[9px] font-bold uppercase tracking-wide text-gray-500 md:mb-2 md:text-xs"
+  >
+    Shop Status
+  </p>
+
+  <!-- Toggle -->
+  <button
+    type="button"
+    (click)="toggleShopStatus()"
+    [attr.aria-pressed]="isShopOpen"
+    [attr.aria-label]="isShopOpen ? 'Close Shop' : 'Open Shop'"
+    class="relative h-8 w-24 overflow-hidden rounded-full p-1 shadow-sm transition-colors duration-300 ease-in-out md:h-10 md:w-28"
+    [ngClass]="
+      isShopOpen
+        ? 'bg-gradient-to-r from-green-500 to-green-400'
+        : 'bg-gradient-to-r from-red-600 to-red-500'
+    "
+  >
+
+    <!-- Toggle Knob -->
+    <span
+      class="absolute left-1 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-gray-100 shadow-md transition-transform duration-300 ease-in-out md:h-8 md:w-8"
+      [ngClass]="
+        isShopOpen
+          ? 'translate-x-16 md:translate-x-[4.5rem]'
+          : 'translate-x-0'
+      "
+    ></span>
+
+    <!-- Status Text -->
+    <span
+      class="absolute inset-0 flex items-center whitespace-nowrap text-[7px] font-bold text-white transition-all duration-300 ease-in-out md:text-[9px]"
+      [ngClass]="
+        isShopOpen
+          ? 'justify-start pl-3 md:pl-4'
+          : 'justify-end pr-3 md:pr-4'
+      "
+    >
+      {{ isShopOpen ? 'SHOP OPEN' : 'SHOP CLOSE' }}
+    </span>
+
+  </button>
+
+    </section>
+
     <!-- Dashboard Stats -->
     <section class="grid grid-cols-2 gap-3 md:gap-5">
 
