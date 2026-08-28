@@ -6,6 +6,8 @@ import { DashboardTableComponent } from './dashboard-table/dashboard-table.compo
 import { MobileHeaderComponent } from './mobile-header/mobile-header.component';
 import { StatusCardComponent } from './status-card/status-card.component';
 import { MessageCardComponent } from './message-card/message-card.component';
+import { ShopCardComponent } from './shop-card/shop-card.component';
+
 
 
 @NgModule({
@@ -15,6 +17,7 @@ import { MessageCardComponent } from './message-card/message-card.component';
     MobileHeaderComponent,
     StatusCardComponent,
     MessageCardComponent,
+    ShopCardComponent,
   ],
   imports: [
     CommonModule
@@ -24,7 +27,8 @@ import { MessageCardComponent } from './message-card/message-card.component';
     DashboardTableComponent,
     MobileHeaderComponent,
     StatusCardComponent,
-    MessageCardComponent
+    MessageCardComponent,
+    ShopCardComponent,
   ]
 })
 export class SharedModule {}

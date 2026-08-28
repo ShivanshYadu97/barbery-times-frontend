@@ -7,13 +7,17 @@ import { CustomerLayoutComponent } from './layout/customer-layout/customer-layou
 import { HeaderComponent } from './layout/header/header.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { SharedModule } from '../shared/shared.module';
+import { SelectShopComponent } from './select-shop/select-shop.component';
+import { SelectServiceComponent } from './select-service/select-service.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
     CustomerLayoutComponent,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    SelectShopComponent,
+    SelectServiceComponent
   ],
   imports: [
     CommonModule,
