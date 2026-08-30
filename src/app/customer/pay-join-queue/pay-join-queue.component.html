@@ -1,0 +1,184 @@
+<!-- Pay & Join Queue -->
+<section class="mx-auto w-full max-w-3xl px-4 md:px-0">
+
+    <!-- Page Header -->
+    <div class="mb-5 px-1 pt-4 pb-2 md:mb-6 md:px-0 md:py-2">
+
+        <!-- Back + Centered Title -->
+        <div class="relative flex h-10 items-center justify-center">
+
+            <!-- Back Arrow -->
+            <button
+                type="button"
+                aria-label="Go back"
+                (click)="goBack()"
+                class="absolute left-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center"
+            >
+                <span class="block -translate-y-1 text-5xl leading-none text-gray-700">
+                    ‹
+                </span>
+            </button>
+
+            <!-- Page Title -->
+            <h1 class="text-sm font-bold leading-none text-gray-900 md:text-2xl">
+                Pay & Join Queue
+            </h1>
+
+        </div>
+
+    </div>
+
+
+    <!-- Total Payable -->
+    <section
+        class="rounded-xl border border-indigo-100 bg-gradient-to-br from-indigo-50 via-indigo-50 to-purple-50 p-4 shadow-[0_2px_10px_rgba(79,70,229,0.15)] md:rounded-2xl md:p-5"
+    >
+
+        <!-- Amount -->
+        <div class="flex items-center justify-between gap-3">
+
+            <p class="text-sm font-bold text-gray-900 md:text-lg">
+                Total Payable
+            </p>
+
+            <p class="text-xl font-bold text-gray-900 md:text-2xl">
+                ₹{{ totalPrice }}
+            </p>
+
+        </div>
+
+
+        <!-- Selected Services -->
+        <div class="mt-3">
+
+            <p
+                *ngFor="let service of selectedServices"
+                class="text-[10px] font-medium leading-5 text-gray-500 md:text-xs"
+            >
+                Service: {{ service.name }}
+            </p>
+
+            <p class="text-[10px] font-medium leading-5 text-gray-500 md:text-xs">
+                Barber: {{ selectedBarber?.name || 'Any Available Barber' }}
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Choose Payment Option -->
+    <section class="mt-6">
+
+        <h2 class="text-sm font-bold text-gray-900 md:text-lg">
+            Choose Payment Option
+        </h2>
+
+
+        <!-- Payment Options -->
+        <div class="mt-4 space-y-4">
+
+            <!-- Online Pay -->
+            <button
+                type="button"
+                (click)="selectPayment('online')"
+                class="flex h-[92px] w-full items-center gap-4 rounded-xl border px-4 text-left shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition md:h-[100px] md:gap-5 md:rounded-2xl md:px-5"
+                [ngClass]="{
+                    'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500':
+                        selectedPayment === 'online',
+
+                    'border-gray-100 bg-white hover:border-indigo-300':
+                        selectedPayment !== 'online'
+                }"
+            >
+
+                <!-- Icon -->
+                <div
+                    class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-2xl md:h-16 md:w-16 md:text-3xl"
+                >
+                    💳
+                </div>
+
+
+                <!-- Details -->
+                <div class="min-w-0 flex-1">
+
+                    <p class="text-base font-bold leading-tight text-gray-900 md:text-lg">
+                        Online Pay
+                    </p>
+
+                    <p class="mt-1 max-w-[220px] text-[10px] font-medium leading-4 text-gray-500 md:text-xs">
+                        Pay securely online and join the queue.
+                    </p>
+
+                </div>
+
+            </button>
+
+
+            <!-- Pay At Shop -->
+            <button
+                type="button"
+                (click)="selectPayment('shop')"
+                class="flex h-[92px] w-full items-center gap-4 rounded-xl border px-4 text-left shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition md:h-[100px] md:gap-5 md:rounded-2xl md:px-5"
+                [ngClass]="{
+                    'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500':
+                        selectedPayment === 'shop',
+
+                    'border-gray-100 bg-white hover:border-indigo-300':
+                        selectedPayment !== 'shop'
+                }"
+            >
+
+                <!-- Icon -->
+                <div
+                    class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-green-50 text-2xl md:h-16 md:w-16 md:text-3xl"
+                >
+                    💵
+                </div>
+
+
+                <!-- Details -->
+                <div class="min-w-0 flex-1">
+
+                    <p class="text-base font-bold leading-tight text-gray-900 md:text-lg">
+                        Pay At Shop
+                    </p>
+
+                    <p class="mt-1 max-w-[220px] text-[10px] font-medium leading-4 text-gray-500 md:text-xs">
+                        Pay at the shop when your turn comes.
+                    </p>
+
+                </div>
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- Payment Info -->
+    <div class="mt-6 flex justify-center px-6">
+
+        <p class="max-w-xs text-center text-[10px] font-medium leading-5 text-gray-500 md:text-sm">
+            After payment, you will be added to the queue.
+        </p>
+
+    </div>
+
+
+    <!-- Proceed To Pay - FIXED BOTTOM -->
+    <div class="sticky bottom-0 mt-6 bg-gray-100 pb-4 pt-2">
+
+        <button
+            type="button"
+            (click)="proceedToPay()"
+            class="h-14 w-full rounded-xl bg-indigo-600 px-8 text-lg font-bold text-white shadow-sm transition hover:bg-indigo-700 active:scale-[0.99] md:h-16 md:rounded-2xl md:text-lg"
+        >
+            Proceed to Pay
+        </button>
+
+    </div>
+
+</section>

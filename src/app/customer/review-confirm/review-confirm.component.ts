@@ -19,7 +19,7 @@ export class ReviewConfirmComponent implements OnInit {
   queuePosition: number = 4;
   estimatedWaitTime: string = '15–20 mins';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.selectedShop = history.state.shop;
@@ -68,14 +68,15 @@ export class ReviewConfirmComponent implements OnInit {
       return;
     }
 
-    // Abhi temporary confirmation
-    console.log('Booking Confirmed');
-
-    console.log('Shop:', this.selectedShop);
-    console.log('Barber:', this.selectedBarber);
-    console.log('Services:', this.selectedServices);
-    console.log('Total Price:', this.totalPrice);
-    console.log('Total Duration:', this.totalDuration);
+    this.router.navigate(
+      ['/customer/pay-join-queue'],
+      {
+        state: {
+          shop: this.selectedShop,
+          barber: this.selectedBarber,
+          services: this.selectedServices
+        }
+      }
+    );
   }
-
 }
