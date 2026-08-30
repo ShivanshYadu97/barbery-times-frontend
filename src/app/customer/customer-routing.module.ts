@@ -6,6 +6,7 @@ import { SelectShopComponent } from './select-shop/select-shop.component';
 import { SelectServiceComponent } from './select-service/select-service.component';
 import { CustomerLayoutComponent } from './layout/customer-layout/customer-layout.component';
 import { SelectBarberComponent } from './select-barber/select-barber.component';
+import { ReviewConfirmComponent } from './review-confirm/review-confirm.component';
 
 const routes: Routes = [
 
@@ -32,6 +33,11 @@ const routes: Routes = [
       {
         path: 'select-barber',
         component: SelectBarberComponent
+      },
+
+      {
+        path: 'review-confirm',
+        component: ReviewConfirmComponent
       }
 
     ]

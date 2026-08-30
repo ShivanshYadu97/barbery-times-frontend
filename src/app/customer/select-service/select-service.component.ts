@@ -77,13 +77,22 @@ export class SelectServiceComponent {
   }
 
   continue(): void {
+
+    // Service select nahi ki hai toh aage nahi jana
     if (this.selectedServices.length === 0) {
       return;
     }
 
-    // Next step yahan aayega
-    console.log('Selected Shop:', this.selectedShop);
-    console.log('Selected Barber:', this.selectedBarber);
-    console.log('Selected Services:', this.selectedServices);
+    // Review & Confirm page par selected data bhejna
+    this.router.navigate(
+      ['/customer/review-confirm'],
+      {
+        state: {
+          shop: this.selectedShop,
+          barber: this.selectedBarber,
+          services: this.selectedServices
+        }
+      }
+    );
   }
 }

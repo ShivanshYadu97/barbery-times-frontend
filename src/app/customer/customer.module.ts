@@ -10,6 +10,7 @@ import { SharedModule } from '../shared/shared.module';
 import { SelectShopComponent } from './select-shop/select-shop.component';
 import { SelectServiceComponent } from './select-service/select-service.component';
 import { SelectBarberComponent } from './select-barber/select-barber.component';
+import { ReviewConfirmComponent } from './review-confirm/review-confirm.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SelectBarberComponent } from './select-barber/select-barber.component';
     SidebarComponent,
     SelectShopComponent,
     SelectServiceComponent,
-    SelectBarberComponent
+    SelectBarberComponent,
+    ReviewConfirmComponent,
   ],
   imports: [
     CommonModule,
