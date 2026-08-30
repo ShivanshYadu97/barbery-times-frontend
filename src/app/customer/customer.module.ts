@@ -12,6 +12,8 @@ import { SelectServiceComponent } from './select-service/select-service.componen
 import { SelectBarberComponent } from './select-barber/select-barber.component';
 import { ReviewConfirmComponent } from './review-confirm/review-confirm.component';
 import { PayJoinQueueComponent } from './pay-join-queue/pay-join-queue.component';
+import { JoiningQueueComponent } from './joining-queue/joining-queue.component';
+import { QueueConfirmedComponent } from './queue-confirmed/queue-confirmed.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { PayJoinQueueComponent } from './pay-join-queue/pay-join-queue.component
     SelectBarberComponent,
     ReviewConfirmComponent,
     PayJoinQueueComponent,
+    JoiningQueueComponent,
+    QueueConfirmedComponent,
   ],
   imports: [
     CommonModule,

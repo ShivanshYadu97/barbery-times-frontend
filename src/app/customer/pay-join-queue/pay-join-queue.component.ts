@@ -14,7 +14,7 @@ export class PayJoinQueueComponent implements OnInit {
 
   selectedPayment: string = 'online';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.selectedShop = history.state.shop;
@@ -60,13 +60,31 @@ export class PayJoinQueueComponent implements OnInit {
       return;
     }
 
-    console.log('Payment Option:', this.selectedPayment);
-    console.log('Total Payable:', this.totalPrice);
-    console.log('Shop:', this.selectedShop);
-    console.log('Barber:', this.selectedBarber);
-    console.log('Services:', this.selectedServices);
+    // Online Payment
+    if (this.selectedPayment === 'online') {
 
-    // Actual payment gateway / queue API yahan baad mein connect hoga
+      console.log('Razorpay flow will come here later');
+
+      return;
+    }
+
+
+    // Pay At Shop
+    if (this.selectedPayment === 'shop') {
+
+      this.router.navigate(
+        ['/customer/joining-queue'],
+        {
+          state: {
+            shop: this.selectedShop,
+            barber: this.selectedBarber,
+            services: this.selectedServices
+          }
+        }
+      );
+
+    }
+
   }
 
 }

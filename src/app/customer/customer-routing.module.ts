@@ -8,6 +8,8 @@ import { CustomerLayoutComponent } from './layout/customer-layout/customer-layou
 import { SelectBarberComponent } from './select-barber/select-barber.component';
 import { ReviewConfirmComponent } from './review-confirm/review-confirm.component';
 import { PayJoinQueueComponent } from './pay-join-queue/pay-join-queue.component';
+import { JoiningQueueComponent } from './joining-queue/joining-queue.component';
+import { QueueConfirmedComponent } from './queue-confirmed/queue-confirmed.component';
 
 const routes: Routes = [
 
@@ -44,6 +46,15 @@ const routes: Routes = [
       {
         path: 'pay-join-queue',
         component: PayJoinQueueComponent
+      },
+
+      {
+        path: 'joining-queue',
+        component: JoiningQueueComponent
+      },
+      {
+        path: 'queue-confirmed',
+        component: QueueConfirmedComponent
       }
 
     ]
