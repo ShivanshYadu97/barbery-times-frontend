@@ -1,0 +1,193 @@
+<!-- Select Barber -->
+<section class="mx-auto w-full max-w-3xl px-4 md:px-0">
+
+    <!-- Page Header -->
+    <div class="mb-5 px-1 pt-4 pb-2 md:mb-6 md:px-0 md:py-2">
+
+        <!-- Back + Centered Title -->
+        <div class="relative flex h-10 items-center justify-center">
+
+            <!-- Back Arrow -->
+            <button
+                type="button"
+                aria-label="Go back"
+                (click)="goBack()"
+                class="absolute left-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center"
+            >
+                <span class="block -translate-y-1 text-5xl leading-none text-gray-700">
+                    ‹
+                </span>
+            </button>
+
+            <!-- Page Title -->
+            <h1 class="text-sm font-bold leading-none text-gray-900 md:text-2xl">
+                Select Barber
+            </h1>
+
+        </div>
+
+    </div>
+
+
+    <!-- Selected Shop -->
+    <section class="pointer-events-none">
+
+        <app-shop-card
+            [shop]="selectedShop"
+            [isSelected]="true"
+        >
+        </app-shop-card>
+
+    </section>
+
+
+    <!-- Choose Barber -->
+    <section class="mt-6">
+
+        <!-- Heading -->
+        <div>
+
+            <h2 class="text-sm font-bold text-gray-900 md:text-lg">
+                Choose Barber
+                <span class="font-medium text-gray-500">
+                    (Optional)
+                </span>
+            </h2>
+
+            <p class="mt-1 text-[10px] text-gray-500 md:text-xs">
+                You can select any available barber
+            </p>
+
+        </div>
+
+
+        <!-- Scrollable Barber List -->
+        <div
+            class="mt-4 max-h-[320px] space-y-4 overflow-y-auto pr-1"
+        >
+
+            <!-- Barber Cards -->
+            <button
+                *ngFor="let barber of barbers"
+                type="button"
+                (click)="selectBarber(barber)"
+                class="flex h-[100px] w-full shrink-0 items-center gap-5 rounded-xl border bg-white px-5 text-left shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition md:h-[110px] md:rounded-2xl md:px-6"
+                [ngClass]="{
+                    'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500':
+                        selectedBarber?.id === barber.id,
+
+                    'border-gray-100 hover:border-indigo-300':
+                        selectedBarber?.id !== barber.id
+                }"
+            >
+
+                <!-- Barber Avatar -->
+                <div
+                    class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-100 text-3xl md:h-[72px] md:w-[72px] md:text-4xl"
+                >
+                    👨
+                </div>
+
+
+                <!-- Barber Details -->
+                <div class="min-w-0 flex-1">
+
+                    <p
+                        class="text-base font-bold leading-tight text-gray-900 md:text-lg"
+                    >
+                        {{ barber.name }}
+                    </p>
+
+                    <p
+                        class="mt-2 text-xs font-medium text-gray-500 md:text-sm"
+                    >
+                        {{ barber.experience }}
+                    </p>
+
+                </div>
+
+
+                <!-- Rating -->
+                <div class="flex shrink-0 items-center gap-1">
+
+                    <span class="text-base text-amber-400 md:text-lg">
+                        ★
+                    </span>
+
+                    <span class="text-sm font-bold text-gray-700 md:text-base">
+                        {{ barber.rating }}
+                    </span>
+
+                </div>
+
+            </button>
+
+        </div>
+
+
+        <!-- Any Available Barber - FIXED -->
+        <button
+            type="button"
+            (click)="selectAnyBarber()"
+            class="mt-4 flex h-[110px] w-full shrink-0 items-center gap-5 rounded-xl border bg-white px-5 text-left shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition md:h-[120px] md:rounded-2xl md:px-6"
+            [ngClass]="{
+                'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500':
+                    selectedBarber?.id === 'any',
+
+                'border-gray-100 hover:border-indigo-300':
+                    selectedBarber?.id !== 'any'
+            }"
+        >
+
+            <!-- Icon -->
+            <div
+                class="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-indigo-50 text-4xl md:h-[76px] md:w-[76px] md:text-5xl"
+            >
+                👥
+            </div>
+
+
+            <!-- Details -->
+            <div class="min-w-0 flex-1">
+
+                <p
+                    class="text-base font-bold leading-tight text-gray-900 md:text-lg"
+                >
+                    Any Available Barber
+                </p>
+
+                <p
+                    class="mt-2 max-w-[240px] text-[10px] font-medium leading-4 text-gray-500 md:text-sm"
+                >
+                    We will assign the next available barber
+                </p>
+
+            </div>
+
+
+            <!-- Arrow -->
+            <span
+                class="shrink-0 text-2xl font-medium leading-none text-gray-400"
+            >
+                ›
+            </span>
+
+        </button>
+
+    </section>
+
+
+    <!-- Continue - FIXED BOTTOM -->
+    <div class="sticky bottom-0 mt-6 bg-gray-100 pb-4 pt-2">
+
+        <button
+            type="button"
+            (click)="continue()"
+            class="h-14 w-full rounded-xl bg-indigo-600 px-8 text-lg font-bold text-white shadow-sm transition hover:bg-indigo-700 active:scale-[0.99] md:h-16 md:rounded-2xl md:text-lg"
+        >
+            Continue
+        </button>
+
+    </div>
+
+</section>

@@ -9,6 +9,7 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { SharedModule } from '../shared/shared.module';
 import { SelectShopComponent } from './select-shop/select-shop.component';
 import { SelectServiceComponent } from './select-service/select-service.component';
+import { SelectBarberComponent } from './select-barber/select-barber.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { SelectServiceComponent } from './select-service/select-service.componen
     HeaderComponent,
     SidebarComponent,
     SelectShopComponent,
-    SelectServiceComponent
+    SelectServiceComponent,
+    SelectBarberComponent
   ],
   imports: [
     CommonModule,

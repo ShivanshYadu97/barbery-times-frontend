@@ -69,7 +69,7 @@ export class SelectShopComponent {
 
     // Move directly to Select Service
     this.router.navigate(
-      ['/customer/select-service'],
+      ['/customer/select-barber'],
       {
         state: {
           shop: shop

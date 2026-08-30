@@ -5,6 +5,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { SelectShopComponent } from './select-shop/select-shop.component';
 import { SelectServiceComponent } from './select-service/select-service.component';
 import { CustomerLayoutComponent } from './layout/customer-layout/customer-layout.component';
+import { SelectBarberComponent } from './select-barber/select-barber.component';
 
 const routes: Routes = [
 
@@ -26,6 +27,11 @@ const routes: Routes = [
       {
         path: 'select-service',
         component: SelectServiceComponent
+      },
+
+      {
+        path: 'select-barber',
+        component: SelectBarberComponent
       }
 
     ]
@@ -37,4 +43,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class CustomerRoutingModule {}
+export class CustomerRoutingModule { }
