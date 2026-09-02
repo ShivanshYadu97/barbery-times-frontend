@@ -55,7 +55,7 @@
             </h2>
 
             <span class="text-[9px] font-medium text-gray-400 md:text-sm">
-                {{ shops.length }} shops
+                {{ (shops$ | async)?.length || 0 }} shops
             </span>
 
         </div>
@@ -64,8 +64,12 @@
         <!-- Shop List -->
         <div>
 
-            <app-shop-card *ngFor="let shop of shops" class="mb-4 block last:mb-0" [shop]="shop"
-                [isSelected]="selectedShop?.id === shop.id" (shopSelected)="selectShop($event)">
+            <app-shop-card
+                *ngFor="let shop of (shops$ | async)"
+                class="mb-4 block last:mb-0"
+                [shop]="shop"
+                [isSelected]="selectedShop?.id === shop.id"
+                (shopSelected)="selectShop($event)">
             </app-shop-card>
 
         </div>

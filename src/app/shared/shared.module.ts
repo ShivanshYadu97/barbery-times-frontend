@@ -7,6 +7,8 @@ import { MobileHeaderComponent } from './mobile-header/mobile-header.component';
 import { StatusCardComponent } from './status-card/status-card.component';
 import { MessageCardComponent } from './message-card/message-card.component';
 import { ShopCardComponent } from './shop-card/shop-card.component';
+import { BarberMenuFormComponent } from './barber-menu-form/barber-menu-form.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -18,9 +20,11 @@ import { ShopCardComponent } from './shop-card/shop-card.component';
     StatusCardComponent,
     MessageCardComponent,
     ShopCardComponent,
+    BarberMenuFormComponent,
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   exports: [
     DashboardCardComponent,
@@ -29,6 +33,7 @@ import { ShopCardComponent } from './shop-card/shop-card.component';
     StatusCardComponent,
     MessageCardComponent,
     ShopCardComponent,
+    BarberMenuFormComponent
   ]
 })
 export class SharedModule {}

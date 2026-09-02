@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SharedModule } from "src/app/shared/shared.module";
 
 @Component({
   selector: 'app-queue-confirmed',
   templateUrl: './queue-confirmed.component.html',
-  styleUrls: ['./queue-confirmed.component.scss']
+  styleUrls: ['./queue-confirmed.component.scss'],
 })
 export class QueueConfirmedComponent implements OnInit {
 

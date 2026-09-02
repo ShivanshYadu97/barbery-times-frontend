@@ -1,53 +1,78 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+
+import { BASE_API_URL } from 'src/app/config/api';
 
 @Component({
   selector: 'app-select-service',
   templateUrl: './select-service.component.html',
   styleUrls: ['./select-service.component.scss']
 })
-export class SelectServiceComponent {
+export class SelectServiceComponent implements OnInit {
 
   selectedShop: any = null;
   selectedBarber: any = null;
 
   selectedServices: any[] = [];
 
-  services = [
-    {
-      id: 1,
-      name: 'Haircut',
-      duration: '20 mins',
-      price: 150
-    },
-    {
-      id: 2,
-      name: 'Beard',
-      duration: '15 mins',
-      price: 100
-    },
-    {
-      id: 3,
-      name: 'Facial Massage',
-      duration: '35 mins',
-      price: 250
-    },
-    {
-      id: 4,
-      name: 'Kids Haircut',
-      duration: '20 mins',
-      price: 120
-    }
-  ];
+  services: any[] = [];
 
-  constructor(private router: Router) {}
+  loading = false;
+  error = '';
+
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
+
+    // Previous page se selected shop aur barber receive karna
     this.selectedShop = history.state.shop;
     this.selectedBarber = history.state.barber;
+
+    // Selected shop ke services load karo
+    if (this.selectedShop?.id) {
+      this.loadServices();
+    } else {
+      this.error = 'Shop information not found.';
+    }
+  }
+
+  loadServices(): void {
+
+    this.loading = true;
+    this.error = '';
+
+    const shopId = this.selectedShop.id;
+
+    const url =
+      `${BASE_API_URL}/api/barber-menu/shop/${shopId}/customer`;
+
+    this.http.get<any[]>(url).subscribe({
+      next: (data) => {
+
+        console.log('Customer services:', data);
+
+        this.services = data;
+
+        this.loading = false;
+      },
+
+      error: (error) => {
+
+        console.error('Failed to load services:', error);
+
+        this.error = 'Unable to load services. Please try again.';
+
+        this.loading = false;
+      }
+    });
   }
 
   goBack(): void {
+
     this.router.navigate(
       ['/customer/select-barber'],
       {
@@ -59,18 +84,24 @@ export class SelectServiceComponent {
   }
 
   selectService(service: any): void {
+
     const index = this.selectedServices.findIndex(
       selected => selected.id === service.id
     );
 
     if (index > -1) {
+
       this.selectedServices.splice(index, 1);
+
     } else {
+
       this.selectedServices.push(service);
+
     }
   }
 
   isServiceSelected(service: any): boolean {
+
     return this.selectedServices.some(
       selected => selected.id === service.id
     );

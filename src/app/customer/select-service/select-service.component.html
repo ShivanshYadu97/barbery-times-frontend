@@ -8,8 +8,12 @@
         <div class="relative flex h-10 items-center justify-center">
 
             <!-- Back Arrow -->
-            <button type="button" aria-label="Go back" (click)="goBack()"
-                class="absolute left-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center">
+            <button
+                type="button"
+                aria-label="Go back"
+                (click)="goBack()"
+                class="absolute left-0 top-1/2 flex h-10 w-10 -translate-y-1/2"
+            >
                 <span class="block -translate-y-1 text-5xl leading-none text-gray-700">
                     ‹
                 </span>
@@ -28,7 +32,10 @@
     <!-- Selected Shop -->
     <section class="pointer-events-none">
 
-        <app-shop-card [shop]="selectedShop" [isSelected]="true">
+        <app-shop-card
+            [shop]="selectedShop"
+            [isSelected]="true"
+        >
         </app-shop-card>
 
     </section>
@@ -36,11 +43,13 @@
 
     <!-- Selected Barber -->
     <section
-        class="mt-4 flex h-[72px] w-full items-center gap-3 rounded-xl border border-indigo-800 bg-gradient-to-br from-indigo-950 via-indigo-900 to-indigo-800 px-3 text-white shadow-sm md:h-[82px] md:gap-4 md:rounded-2xl md:px-4">
+        class="mt-4 flex h-[72px] w-full items-center gap-3 rounded-xl border border-indigo-800 bg-gradient-to-br from-indigo-950 via-indigo-900 to-indigo-800 px-3 text-white shadow-sm md:h-[82px] md:gap-4 md:rounded-2xl md:px-4"
+    >
 
         <!-- Barber Avatar -->
         <div
-            class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-indigo-800 text-xl md:h-14 md:w-14 md:text-2xl">
+            class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-indigo-800 text-xl md:h-14 md:w-14 md:text-2xl"
+        >
             👨
         </div>
 
@@ -54,8 +63,8 @@
 
             <p class="mt-1 text-[10px] font-medium text-indigo-200 md:text-xs">
                 {{ selectedBarber?.id === 'any'
-                ? 'Next available barber will be assigned'
-                : 'Selected barber'
+                    ? 'Next available barber will be assigned'
+                    : 'Selected barber'
                 }}
             </p>
 
@@ -81,11 +90,62 @@
         </div>
 
 
+        <!-- Loading -->
+        <div
+            *ngIf="loading"
+            class="mt-4 rounded-xl border border-gray-100 bg-white px-5 py-10 text-center shadow-sm"
+        >
+            <p class="text-sm font-medium text-gray-500">
+                Loading services...
+            </p>
+        </div>
+
+
+        <!-- Error -->
+        <div
+            *ngIf="!loading && error"
+            class="mt-4 rounded-xl border border-red-100 bg-red-50 px-5 py-8 text-center"
+        >
+            <p class="text-sm font-medium text-red-600">
+                {{ error }}
+            </p>
+
+            <button
+                type="button"
+                (click)="loadServices()"
+                class="mt-3 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+            >
+                Try Again
+            </button>
+        </div>
+
+
+        <!-- Empty State -->
+        <div
+            *ngIf="!loading && !error && services.length === 0"
+            class="mt-4 rounded-xl border border-gray-100 bg-white px-5 py-10 text-center shadow-sm"
+        >
+            <p class="text-sm font-medium text-gray-500">
+                No services are currently available.
+            </p>
+
+            <p class="mt-1 text-xs text-gray-400">
+                Please try another shop.
+            </p>
+        </div>
+
+
         <!-- Scrollable Service List -->
-        <div class="mt-4 max-h-[320px] space-y-4 overflow-y-auto pr-1">
+        <div
+            *ngIf="!loading && !error && services.length > 0"
+            class="mt-4 max-h-[320px] space-y-4 overflow-y-auto pr-1"
+        >
 
             <!-- Service Cards -->
-            <button *ngFor="let service of services" type="button" (click)="selectService(service)"
+            <button
+                *ngFor="let service of services"
+                type="button"
+                (click)="selectService(service)"
                 class="flex h-[100px] w-full shrink-0 items-center gap-5 rounded-xl border bg-white px-5 text-left shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition md:h-[110px] md:rounded-2xl md:px-6"
                 [ngClass]="{
                     'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500':
@@ -93,19 +153,25 @@
 
                     'border-gray-100 hover:border-indigo-300':
                         !isServiceSelected(service)
-                }">
+                }"
+            >
 
                 <!-- Selection Circle -->
-                <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 transition md:h-9 md:w-9"
+                <div
+                    class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 transition md:h-9 md:w-9"
                     [ngClass]="{
                         'border-indigo-600 bg-indigo-600 text-white':
                             isServiceSelected(service),
 
                         'border-indigo-300 bg-white':
                             !isServiceSelected(service)
-                    }">
+                    }"
+                >
 
-                    <span *ngIf="isServiceSelected(service)" class="text-sm font-bold leading-none">
+                    <span
+                        *ngIf="isServiceSelected(service)"
+                        class="text-sm font-bold leading-none"
+                    >
                         ✓
                     </span>
 
@@ -120,7 +186,7 @@
                     </p>
 
                     <p class="mt-2 text-xs font-medium text-gray-500 md:text-sm">
-                        {{ service.duration }}
+                        {{ service.durationMinutes }} min
                     </p>
 
                 </div>
@@ -145,8 +211,12 @@
     <!-- Continue - FIXED BOTTOM -->
     <div class="sticky bottom-0 mt-6 bg-gray-100 pb-4 pt-2">
 
-        <button type="button" (click)="continue()" [disabled]="selectedServices.length === 0"
-            class="h-14 w-full rounded-xl bg-indigo-600 px-8 text-lg font-bold text-white shadow-sm transition hover:bg-indigo-700 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 md:h-16 md:rounded-2xl md:text-lg">
+        <button
+            type="button"
+            (click)="continue()"
+            [disabled]="selectedServices.length === 0"
+            class="h-14 w-full rounded-xl bg-indigo-600 px-8 text-lg font-bold text-white shadow-sm transition hover:bg-indigo-700 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 md:h-16 md:rounded-2xl md:text-lg"
+        >
             Continue
         </button>
 

@@ -66,18 +66,25 @@
             class="mt-4 max-h-[320px] space-y-4 overflow-y-auto pr-1"
         >
 
-            <!-- Barber Cards -->
+            <!-- Dynamic Barber Cards -->
             <button
-                *ngFor="let barber of barbers"
+                *ngFor="let barber of (barbers$ | async)"
                 type="button"
                 (click)="selectBarber(barber)"
+                [disabled]="!isBarberAvailable(barber)"
                 class="flex h-[100px] w-full shrink-0 items-center gap-5 rounded-xl border bg-white px-5 text-left shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition md:h-[110px] md:rounded-2xl md:px-6"
                 [ngClass]="{
+
                     'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500':
                         selectedBarber?.id === barber.id,
 
                     'border-gray-100 hover:border-indigo-300':
-                        selectedBarber?.id !== barber.id
+                        selectedBarber?.id !== barber.id &&
+                        isBarberAvailable(barber),
+
+                    'cursor-not-allowed opacity-60':
+                        !isBarberAvailable(barber)
+
                 }"
             >
 
@@ -92,23 +99,44 @@
                 <!-- Barber Details -->
                 <div class="min-w-0 flex-1">
 
+                    <!-- Barber Name -->
                     <p
                         class="text-base font-bold leading-tight text-gray-900 md:text-lg"
                     >
                         {{ barber.name }}
                     </p>
 
+
+                    <!-- Barber Status -->
                     <p
-                        class="mt-2 text-xs font-medium text-gray-500 md:text-sm"
+                        class="mt-2 text-xs font-medium md:text-sm"
+                        [ngClass]="{
+
+                            'text-green-600':
+                                barber.active && barber.shiftActive,
+
+                            'text-red-500':
+                                !barber.active,
+
+                            'text-gray-500':
+                                barber.active && !barber.shiftActive
+
+                        }"
                     >
-                        {{ barber.experience }}
+                        {{ getBarberStatus(barber) }}
                     </p>
 
                 </div>
 
 
                 <!-- Rating -->
-                <div class="flex shrink-0 items-center gap-1">
+                <div
+                    *ngIf="
+                        barber.rating !== undefined &&
+                        barber.rating !== null
+                    "
+                    class="flex shrink-0 items-center gap-1"
+                >
 
                     <span class="text-base text-amber-400 md:text-lg">
                         ★
@@ -122,20 +150,31 @@
 
             </button>
 
+
+            <!-- No Barbers -->
+            <div
+                *ngIf="(barbers$ | async)?.length === 0"
+                class="rounded-xl bg-white px-5 py-8 text-center text-sm text-gray-500 shadow-[0_2px_8px_rgba(0,0,0,0.08)]"
+            >
+                No barbers are available for this shop.
+            </div>
+
         </div>
 
 
-        <!-- Any Available Barber - FIXED -->
+        <!-- Any Available Barber -->
         <button
             type="button"
             (click)="selectAnyBarber()"
             class="mt-4 flex h-[110px] w-full shrink-0 items-center gap-5 rounded-xl border bg-white px-5 text-left shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition md:h-[120px] md:rounded-2xl md:px-6"
             [ngClass]="{
+
                 'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500':
                     selectedBarber?.id === 'any',
 
                 'border-gray-100 hover:border-indigo-300':
                     selectedBarber?.id !== 'any'
+
             }"
         >
 

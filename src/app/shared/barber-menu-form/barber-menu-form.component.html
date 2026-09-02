@@ -1,0 +1,167 @@
+<!-- Modal Overlay -->
+<div
+  *ngIf="isOpen"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+  (click)="close()"
+>
+
+  <!-- Modal -->
+  <div
+    class="w-full max-w-lg rounded-2xl bg-white shadow-2xl"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b border-gray-200 px-6 py-5">
+
+      <div>
+        <h2 class="text-xl font-bold text-gray-900">
+          {{ isEditMode ? 'Edit Service' : 'Add Service' }}
+        </h2>
+
+        <p class="mt-1 text-sm text-gray-500">
+          {{ isEditMode
+            ? 'Update the details of this service.'
+            : 'Add a new service to your shop menu.'
+          }}
+        </p>
+      </div>
+
+      <!-- Close -->
+      <button
+        type="button"
+        (click)="close()"
+        class="flex h-9 w-9 items-center justify-center rounded-full text-xl text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <!-- Form -->
+    <form
+      (ngSubmit)="submit()"
+      class="space-y-5 px-6 py-6"
+    >
+
+      <!-- Service Name -->
+      <div>
+
+        <label
+          for="serviceName"
+          class="mb-2 block text-sm font-medium text-gray-700"
+        >
+          Service Name
+        </label>
+
+        <input
+          id="serviceName"
+          type="text"
+          name="serviceName"
+          [(ngModel)]="formData.name"
+          placeholder="e.g. Premium Haircut"
+          class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+        />
+
+      </div>
+
+
+      <!-- Price + Duration -->
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+
+        <!-- Price -->
+        <div>
+
+          <label
+            for="servicePrice"
+            class="mb-2 block text-sm font-medium text-gray-700"
+          >
+            Price (₹)
+          </label>
+
+          <input
+            id="servicePrice"
+            type="number"
+            name="servicePrice"
+            min="0"
+            [(ngModel)]="formData.price"
+            placeholder="e.g. 250"
+            class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+          />
+
+        </div>
+
+
+        <!-- Duration -->
+        <div>
+
+          <label
+            for="serviceDuration"
+            class="mb-2 block text-sm font-medium text-gray-700"
+          >
+            Estimated Time (minutes)
+          </label>
+
+          <input
+            id="serviceDuration"
+            type="number"
+            name="serviceDuration"
+            min="1"
+            [(ngModel)]="formData.durationMinutes"
+            placeholder="e.g. 30"
+            class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+          />
+
+        </div>
+
+      </div>
+
+
+      <!-- Description -->
+      <div>
+
+        <label
+          for="serviceDescription"
+          class="mb-2 block text-sm font-medium text-gray-700"
+        >
+          Description
+        </label>
+
+        <textarea
+          id="serviceDescription"
+          name="serviceDescription"
+          rows="4"
+          [(ngModel)]="formData.description"
+          placeholder="Describe the service..."
+          class="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+        ></textarea>
+
+      </div>
+
+
+      <!-- Actions -->
+      <div class="flex justify-end gap-3 border-t border-gray-100 pt-5">
+
+        <button
+          type="button"
+          (click)="close()"
+          class="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
+        >
+          {{ isEditMode ? 'Save Changes' : 'Add Service' }}
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

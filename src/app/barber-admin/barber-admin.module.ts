@@ -7,6 +7,7 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { BarberAdminLayoutComponent } from './layout/barber-admin-layout/barber-admin-layout.component';
 import { SharedModule } from '../shared/shared.module';
+import { ServicesComponent } from './services/services.component';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { SharedModule } from '../shared/shared.module';
     SidebarComponent,
     HeaderComponent,
     BarberAdminLayoutComponent,
+    ServicesComponent,
   ],
   imports: [
     CommonModule,

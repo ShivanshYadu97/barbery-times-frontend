@@ -1,0 +1,225 @@
+<div class="w-full">
+
+  <!-- Page Header -->
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">
+        Services
+      </h1>
+
+      <p class="mt-1 text-sm text-gray-500">
+        Manage the services available at your shop.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- Services Table Card -->
+  <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+
+    <!-- Table -->
+    <div class="w-full overflow-x-auto">
+
+      <table class="w-full min-w-[900px]">
+
+        <!-- Table Header -->
+        <thead class="border-b border-gray-200 bg-gray-50">
+
+          <tr>
+
+            <th
+              class="px-6 py-4 text-left text-sm font-semibold text-gray-600"
+            >
+              Service Name
+            </th>
+
+            <th
+              class="px-6 py-4 text-left text-sm font-semibold text-gray-600"
+            >
+              Price
+            </th>
+
+            <th
+              class="px-6 py-4 text-left text-sm font-semibold text-gray-600"
+            >
+              Description
+            </th>
+
+            <th
+              class="px-6 py-4 text-center text-sm font-semibold text-gray-600"
+            >
+              Estimated Time (minutes)
+            </th>
+
+            <th
+              class="px-6 py-4 text-center text-sm font-semibold text-gray-600"
+            >
+              Edit
+            </th>
+
+            <th
+              class="px-6 py-4 text-center text-sm font-semibold text-gray-600"
+            >
+              Status
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <!-- Table Body -->
+        <tbody class="divide-y divide-gray-100">
+
+          <!-- Service Rows -->
+          <tr
+            *ngFor="let service of (services$ | async)"
+            class="transition hover:bg-gray-50"
+          >
+
+            <!-- Service Name -->
+            <td class="px-6 py-4">
+
+              <div class="font-medium text-gray-900">
+                {{ service.name }}
+              </div>
+
+            </td>
+
+
+            <!-- Price -->
+            <td class="px-6 py-4">
+
+              <span class="font-medium text-gray-900">
+                ₹{{ service.price }}
+              </span>
+
+            </td>
+
+
+            <!-- Description -->
+            <td class="max-w-[280px] px-6 py-4">
+
+              <p class="truncate text-sm text-gray-500">
+                {{ service.description || '—' }}
+              </p>
+
+            </td>
+
+
+            <!-- Estimated Time -->
+            <td class="px-6 py-4 text-center">
+
+              <span class="text-sm text-gray-600">
+                {{ service.durationMinutes }} min
+              </span>
+
+            </td>
+
+
+            <!-- Edit -->
+            <td class="px-6 py-4 text-center">
+
+              <button
+                type="button"
+                (click)="editService(service)"
+                class="rounded-lg px-3 py-2 text-sm font-medium text-indigo-600 transition hover:bg-indigo-50"
+              >
+                Edit
+              </button>
+
+            </td>
+
+
+            <!-- Status Toggle -->
+            <td class="px-6 py-4">
+
+              <div class="flex items-center justify-center gap-3">
+
+                <button
+                  type="button"
+                  (click)="toggleServiceStatus(service)"
+                  [class.bg-green-500]="service.active"
+                  [class.bg-gray-300]="!service.active"
+                  class="relative h-6 w-11 rounded-full transition"
+                >
+
+                  <span
+                    [class.translate-x-5]="service.active"
+                    [class.translate-x-0]="!service.active"
+                    class="absolute left-1 top-1 h-4 w-4 rounded-full bg-white shadow transition"
+                  ></span>
+
+                </button>
+
+
+                <span
+                  [class.text-green-600]="service.active"
+                  [class.text-gray-500]="!service.active"
+                  class="text-sm font-medium"
+                >
+                  {{ service.active ? 'Active' : 'Inactive' }}
+                </span>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+
+          <!-- Empty State -->
+          <tr *ngIf="(services$ | async)?.length === 0">
+
+            <td
+              colspan="6"
+              class="px-6 py-12 text-center"
+            >
+
+              <div class="text-sm text-gray-500">
+                No services found.
+              </div>
+
+              <p class="mt-1 text-xs text-gray-400">
+                Add a service to start building your shop menu.
+              </p>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- Add Service Button -->
+    <div
+      class="flex justify-end border-t border-gray-200 bg-white px-6 py-5"
+    >
+
+      <button
+        type="button"
+        (click)="addService()"
+        class="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
+      >
+        + Add Service
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- Shared Add / Edit Service Form -->
+<app-barber-menu-form
+  [isOpen]="isFormOpen"
+  [isEditMode]="isEditMode"`
+  [service]="selectedService"
+  (closed)="closeForm()"
+  (submitted)="saveService($event)"
+></app-barber-menu-form>
+
+</div>
