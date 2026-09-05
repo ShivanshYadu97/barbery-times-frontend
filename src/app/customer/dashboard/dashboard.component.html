@@ -57,12 +57,20 @@
         <div class="grid min-w-0 flex-1 grid-cols-2 gap-2 md:gap-4">
 
             <!-- Queue Position -->
-            <app-status-card class="block min-w-0" icon="🎟️" value="#3" label="Queue Position">
+            <app-status-card
+                class="block min-w-0"
+                icon="🎟️"
+                [value]="queue ? '#' + queue.queuePosition : '--'"
+                label="Queue Position">
             </app-status-card>
 
 
             <!-- Estimated Waiting Time -->
-            <app-status-card class="block min-w-0" icon="⏱️" value="00:50:00" label="Estimated Waiting Time">
+            <app-status-card
+                class="block min-w-0"
+                icon="⏱️"
+                [value]="countdown"
+                label="Estimated Waiting Time">
             </app-status-card>
 
         </div>
@@ -113,7 +121,7 @@
 
                 <span
                     class="flex h-5 w-5 items-center justify-center rounded-full bg-indigo-700 text-[9px] font-bold text-white md:h-9 md:w-9 md:text-sm">
-                    3
+                    {{ queue ? queue.queuePosition : '--' }}
                 </span>
 
             </div>
@@ -155,19 +163,30 @@
     <div class="grid grid-cols-3 gap-2 md:gap-4">
 
         <!-- Book Slot -->
-        <app-dashboard-card [isActionCard]="true" icon="📅" title="Book Slot" description="Join the queue online"
+        <app-dashboard-card
+            [isActionCard]="true"
+            icon="📅"
+            title="Book Slot"
+            description="Join the queue online"
             route="/customer/select-shop">
         </app-dashboard-card>
 
 
         <!-- Shop Info -->
-        <app-dashboard-card [isActionCard]="true" icon="🏪" title="Shop Info"
+        <app-dashboard-card
+            [isActionCard]="true"
+            icon="🏪"
+            title="Shop Info"
             description="View address, timings & contact">
         </app-dashboard-card>
 
 
         <!-- Rate Us -->
-        <app-dashboard-card [isActionCard]="true" icon="⭐" title="Rate Us" description="Share your experience with us">
+        <app-dashboard-card
+            [isActionCard]="true"
+            icon="⭐"
+            title="Rate Us"
+            description="Share your experience with us">
         </app-dashboard-card>
 
     </div>
@@ -208,7 +227,8 @@
 
         <!-- Joined Time -->
         <p class="text-[10px] font-medium text-gray-500 md:text-sm">
-            Joined on: 22 May 2025, 10:15 AM
+            Joined on:
+            {{ queue ? (queue.joinedAt | date:'dd MMM yyyy, hh:mm a') : '--' }}
         </p>
 
     </div>
@@ -234,7 +254,7 @@
 
             <!-- Value -->
             <p class="mt-1 text-lg font-bold text-gray-900 md:mt-2 md:text-2xl">
-                #3
+                {{ queue ? '#' + queue.queuePosition : '--' }}
             </p>
 
         </div>
@@ -256,7 +276,7 @@
             <!-- Time -->
             <div
                 class="mt-1 rounded-lg bg-gradient-to-r from-indigo-800 to-indigo-700 px-2 py-1 text-[12px] font-bold text-white shadow-sm md:mt-2 md:rounded-xl md:px-4 md:py-2 md:text-2xl">
-                00:50:00
+                {{ countdown }}
             </div>
 
             <!-- Time Format -->
@@ -304,7 +324,7 @@
 
             <!-- Service -->
             <p class="mt-1 truncate text-sm font-bold text-gray-900 md:mt-2 md:text-xl">
-                Haircut
+                {{ queue ? queue.services : '--' }}
             </p>
 
         </div>

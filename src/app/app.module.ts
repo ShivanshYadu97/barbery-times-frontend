@@ -19,6 +19,7 @@ import { StoreModule } from '@ngrx/store';
 import { shopReducer } from './State/Shop/shop.reducer';
 import { barberReducer } from './State/Barber/barber.reducer';
 import { barberAdminReducer } from './State/Barber-Admin/barber-admin.reducer';
+import { customerReducer } from './State/Customer/customer.reducer';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { barberAdminReducer } from './State/Barber-Admin/barber-admin.reducer';
     StoreModule.forRoot({
       shop: shopReducer,
       barber: barberReducer,
-      barberAdmin: barberAdminReducer
+      barberAdmin: barberAdminReducer,
+      customer: customerReducer
     })
   ],
 
