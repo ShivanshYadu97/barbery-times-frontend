@@ -158,3 +158,40 @@ export const getCustomerBarbersFailure = createAction(
     error: any;
   }>()
 );
+
+
+
+// =============================
+// GET BARBER QUEUE
+// =============================
+
+export const getBarberQueueRequest = createAction(
+
+  '[Barber] Get Barber Queue Request',
+
+  props<{
+    shopId: number;
+    barberId: number;
+  }>()
+
+);
+
+export const getBarberQueueSuccess = createAction(
+
+  '[Barber] Get Barber Queue Success',
+
+  props<{
+    payload: any[];
+  }>()
+
+);
+
+export const getBarberQueueFailure = createAction(
+
+  '[Barber] Get Barber Queue Failure',
+
+  props<{
+    error: any;
+  }>()
+
+);

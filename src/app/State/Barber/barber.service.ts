@@ -22,7 +22,10 @@ import {
   updateBarberShiftFailure,
 
   getCustomerBarbersSuccess,
-  getCustomerBarbersFailure
+  getCustomerBarbersFailure,
+
+  getBarberQueueSuccess,
+  getBarberQueueFailure
 } from './barber.action';
 
 
@@ -37,7 +40,7 @@ export class BarberService {
   constructor(
     private http: HttpClient,
     private store: Store
-  ) {}
+  ) { }
 
 
   // ==========================================
@@ -322,5 +325,51 @@ export class BarberService {
 
     });
   }
+
+
+
+  // ==========================================
+  // GET BARBER QUEUE
+  // ==========================================
+
+  getBarberQueue(
+    shopId: number,
+    barberId: number
+  ) {
+
+    const url =
+      `${this.API_BASE_URL}/api/queue/shop/${shopId}/barber/${barberId}`;
+
+    return this.http.get<any[]>(url).pipe(
+
+      map((data: any[]) => {
+
+        console.log('barber queue:', data);
+
+        return getBarberQueueSuccess({
+          payload: data
+        });
+
+      }),
+
+      catchError((error: any) => {
+
+        console.error('Get barber queue error:', error);
+
+        return of(
+          getBarberQueueFailure({
+            error: error?.error?.message || error?.message
+          })
+        );
+
+      })
+
+    ).subscribe((action) => {
+
+      this.store.dispatch(action);
+
+    });
+  }
+
 
 }

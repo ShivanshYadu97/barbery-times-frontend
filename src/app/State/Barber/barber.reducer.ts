@@ -23,13 +23,19 @@ import {
 
   getCustomerBarbersRequest,
   getCustomerBarbersSuccess,
-  getCustomerBarbersFailure
+  getCustomerBarbersFailure,
+
+  getBarberQueueRequest,
+  getBarberQueueSuccess,
+  getBarberQueueFailure
 } from './barber.action';
 
 
 export interface BarberState {
 
   barbers: any[];
+
+  queue: any[];
 
   loading: boolean;
 
@@ -41,6 +47,8 @@ export interface BarberState {
 const initialState: BarberState = {
 
   barbers: [],
+
+  queue: [],
 
   loading: false,
 
@@ -65,6 +73,7 @@ export const barberReducer = createReducer(
     deleteBarberRequest,
     updateBarberShiftRequest,
     getCustomerBarbersRequest,
+    getBarberQueueRequest,
 
     (state) => ({
       ...state,
@@ -87,6 +96,7 @@ export const barberReducer = createReducer(
     deleteBarberFailure,
     updateBarberShiftFailure,
     getCustomerBarbersFailure,
+    getBarberQueueFailure,
 
     (state, action) => ({
       ...state,
@@ -214,6 +224,25 @@ export const barberReducer = createReducer(
             ? action.payload
             : barber
       )
+    })
+  ),
+
+
+  // ==========================================
+  // BARBER QUEUE SUCCESS
+  // ==========================================
+
+  on(
+    getBarberQueueSuccess,
+
+    (state, action) => ({
+      ...state,
+
+      loading: false,
+
+      error: null,
+
+      queue: action.payload
     })
   )
 
