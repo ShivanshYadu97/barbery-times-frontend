@@ -25,7 +25,12 @@ import {
   getCustomerBarbersFailure,
 
   getBarberQueueSuccess,
-  getBarberQueueFailure
+  getBarberQueueFailure,
+
+  // START SERVICE
+  startServiceSuccess,
+  startServiceFailure
+
 } from './barber.action';
 
 
@@ -47,7 +52,10 @@ export class BarberService {
   // CREATE BARBER
   // ==========================================
 
-  createBarber(shopId: number, reqData: any) {
+  createBarber(
+    shopId: number,
+    reqData: any
+  ) {
 
     const url =
       `${this.API_BASE_URL}/api/barbers/shop/${shopId}`;
@@ -88,7 +96,9 @@ export class BarberService {
   // GET BARBERS BY SHOP
   // ==========================================
 
-  getBarbers(shopId: number) {
+  getBarbers(
+    shopId: number
+  ) {
 
     const url =
       `${this.API_BASE_URL}/api/barbers/shop/${shopId}`;
@@ -129,7 +139,9 @@ export class BarberService {
   // GET BARBER BY ID
   // ==========================================
 
-  getBarberById(barberId: number) {
+  getBarberById(
+    barberId: number
+  ) {
 
     const url =
       `${this.API_BASE_URL}/api/barbers/${barberId}`;
@@ -205,7 +217,9 @@ export class BarberService {
   // DELETE / DEACTIVATE BARBER
   // ==========================================
 
-  deleteBarber(barberId: number) {
+  deleteBarber(
+    barberId: number
+  ) {
 
     const url =
       `${this.API_BASE_URL}/api/barbers/${barberId}`;
@@ -214,7 +228,10 @@ export class BarberService {
 
       map(() => {
 
-        console.log('barber deactivated:', barberId);
+        console.log(
+          'barber deactivated:',
+          barberId
+        );
 
         return deleteBarberSuccess({
           barberId
@@ -224,7 +241,10 @@ export class BarberService {
 
       catchError((error: any) => {
 
-        console.error('Delete barber error:', error);
+        console.error(
+          'Delete barber error:',
+          error
+        );
 
         return of(
           deleteBarberFailure({
@@ -258,7 +278,10 @@ export class BarberService {
 
       map((data: any) => {
 
-        console.log('barber shift updated:', data);
+        console.log(
+          'barber shift updated:',
+          data
+        );
 
         return updateBarberShiftSuccess({
           payload: data
@@ -268,7 +291,10 @@ export class BarberService {
 
       catchError((error: any) => {
 
-        console.error('Update barber shift error:', error);
+        console.error(
+          'Update barber shift error:',
+          error
+        );
 
         return of(
           updateBarberShiftFailure({
@@ -283,6 +309,7 @@ export class BarberService {
       this.store.dispatch(action);
 
     });
+
   }
 
 
@@ -290,7 +317,9 @@ export class BarberService {
   // GET BARBERS FOR CUSTOMER
   // ==========================================
 
-  getCustomerBarbers(shopId: number) {
+  getCustomerBarbers(
+    shopId: number
+  ) {
 
     const url =
       `${this.API_BASE_URL}/api/barbers/shop/${shopId}/customer`;
@@ -299,7 +328,10 @@ export class BarberService {
 
       map((data: any[]) => {
 
-        console.log('customer barbers:', data);
+        console.log(
+          'customer barbers:',
+          data
+        );
 
         return getCustomerBarbersSuccess({
           payload: data
@@ -309,11 +341,16 @@ export class BarberService {
 
       catchError((error: any) => {
 
-        console.error('Get customer barbers error:', error);
+        console.error(
+          'Get customer barbers error:',
+          error
+        );
 
         return of(
           getCustomerBarbersFailure({
-            error: error?.error?.message || error?.message
+            error:
+              error?.error?.message ||
+              error?.message
           })
         );
 
@@ -324,8 +361,8 @@ export class BarberService {
       this.store.dispatch(action);
 
     });
-  }
 
+  }
 
 
   // ==========================================
@@ -344,7 +381,10 @@ export class BarberService {
 
       map((data: any[]) => {
 
-        console.log('barber queue:', data);
+        console.log(
+          'barber queue:',
+          data
+        );
 
         return getBarberQueueSuccess({
           payload: data
@@ -354,11 +394,16 @@ export class BarberService {
 
       catchError((error: any) => {
 
-        console.error('Get barber queue error:', error);
+        console.error(
+          'Get barber queue error:',
+          error
+        );
 
         return of(
           getBarberQueueFailure({
-            error: error?.error?.message || error?.message
+            error:
+              error?.error?.message ||
+              error?.message
           })
         );
 
@@ -369,7 +414,63 @@ export class BarberService {
       this.store.dispatch(action);
 
     });
+
   }
 
+
+  // ==========================================
+  // START SERVICE
+  // ==========================================
+
+
+  startService(
+    queueId: number
+  ) {
+
+    const url =
+      `${this.API_BASE_URL}/api/queue/${queueId}/start`;
+
+    return this.http.post<any>(
+      url,
+      {}
+    ).pipe(
+
+      map((data: any) => {
+
+        console.log(
+          'service started:',
+          data
+        );
+
+        return startServiceSuccess({
+          payload: data
+        });
+
+      }),
+
+      catchError((error: any) => {
+
+        console.error(
+          'Start service error:',
+          error
+        );
+
+        return of(
+          startServiceFailure({
+            error:
+              error?.error?.message ||
+              error?.message
+          })
+        );
+
+      })
+
+    ).subscribe((action) => {
+
+      this.store.dispatch(action);
+
+    });
+
+  }
 
 }

@@ -1,45 +1,37 @@
 <!-- Shift Toggle -->
 <section class="mb-4 md:mb-5">
-  <p
-    class="mb-1.5 text-[9px] font-bold uppercase tracking-wide text-gray-500 md:mb-2 md:text-xs"
-  >
-    Shift Status
-  </p>
+    <p class="mb-1.5 text-[9px] font-bold uppercase tracking-wide text-gray-500 md:mb-2 md:text-xs">
+        Shift Status
+    </p>
 
-  <button
-    type="button"
-    (click)="toggleShift()"
-    [attr.aria-pressed]="isShiftActive"
-    [attr.aria-label]="isShiftActive ? 'Stop Shift' : 'Start Shift'"
-    class="relative h-8 w-20 overflow-hidden rounded-full p-1 shadow-sm transition-colors duration-300 ease-in-out md:h-10 md:w-24"
-    [ngClass]="
+    <button type="button" (click)="toggleShift()" [attr.aria-pressed]="isShiftActive"
+        [attr.aria-label]="isShiftActive ? 'Stop Shift' : 'Start Shift'"
+        class="relative h-8 w-20 overflow-hidden rounded-full p-1 shadow-sm transition-colors duration-300 ease-in-out md:h-10 md:w-24"
+        [ngClass]="
       isShiftActive
         ? 'bg-gradient-to-r from-green-500 to-green-400'
         : 'bg-gradient-to-r from-red-600 to-red-500'
-    "
-  >
-    <!-- Toggle Knob -->
-    <span
-      class="absolute left-1 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-gray-100 shadow-md transition-transform duration-300 ease-in-out md:h-8 md:w-8"
-      [ngClass]="
+    ">
+        <!-- Toggle Knob -->
+        <span
+            class="absolute left-1 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-gray-100 shadow-md transition-transform duration-300 ease-in-out md:h-8 md:w-8"
+            [ngClass]="
         isShiftActive
           ? 'translate-x-12 md:translate-x-14'
           : 'translate-x-0'
-      "
-    ></span>
+      "></span>
 
-    <!-- Status -->
-    <span
-      class="absolute inset-0 flex items-center text-[7px] font-bold text-white transition-all duration-300 ease-in-out md:text-[9px]"
-      [ngClass]="
+        <!-- Status -->
+        <span
+            class="absolute inset-0 flex items-center text-[7px] font-bold text-white transition-all duration-300 ease-in-out md:text-[9px]"
+            [ngClass]="
         isShiftActive
           ? 'justify-start pl-2.5 md:pl-3'
           : 'justify-end pr-2.5 md:pr-3'
-      "
-    >
-      {{ isShiftActive ? 'SHIFT ON' : 'SHIFT OFF' }}
-    </span>
-  </button>
+      ">
+            {{ isShiftActive ? 'SHIFT ON' : 'SHIFT OFF' }}
+        </span>
+    </button>
 </section>
 
 <!-- Current Customer -->
@@ -48,13 +40,11 @@
 
     <div class="flex items-center justify-between">
 
-        <p
-            class="text-[10px] font-bold uppercase tracking-wide text-indigo-200 md:text-sm">
+        <p class="text-[10px] font-bold uppercase tracking-wide text-indigo-200 md:text-sm">
             Current Customer
         </p>
 
-        <span
-            class="rounded-full bg-indigo-800/70 px-3 py-1 text-[10px] font-medium text-indigo-100 md:text-sm">
+        <span class="rounded-full bg-indigo-800/70 px-3 py-1 text-[10px] font-medium text-indigo-100 md:text-sm">
 
             <span class="mr-1 text-green-400">●</span>
 
@@ -76,13 +66,10 @@
             <div
                 class="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-indigo-400 md:h-20 md:w-20">
 
-                <img
-                    [src]="
+                <img [src]="
                         'https://i.pravatar.cc/150?u='
                         + currentCustomer.customerId
-                    "
-                    [alt]="currentCustomer.customerName"
-                    class="h-full w-full object-cover" />
+                    " [alt]="currentCustomer.customerName" class="h-full w-full object-cover" />
 
             </div>
 
@@ -95,8 +82,7 @@
                         {{ currentCustomer.customerName }}
                     </h2>
 
-                    <span
-                        class="rounded-md bg-cyan-400/20 px-2 py-1 text-[9px] font-medium text-cyan-100 md:text-xs">
+                    <span class="rounded-md bg-cyan-400/20 px-2 py-1 text-[9px] font-medium text-cyan-100 md:text-xs">
                         Online
                     </span>
 
@@ -131,17 +117,22 @@
             </div>
 
 
-            <div class="mt-1 text-4xl font-bold tracking-wide md:text-5xl">
-
-                {{ currentCustomer.totalDurationMinutes }} min
-
+            <!-- Service Warning Bell -->
+            <div *ngIf="showServiceWarning" class="mt-2 flex justify-center">
+                <span class="service-warning-bell">
+                    🔔
+                </span>
             </div>
 
 
-            <p
-                class="mt-1 text-[8px] font-medium tracking-widest text-indigo-300 md:text-xs">
+            <div class="mt-1 text-4xl font-bold tracking-wide md:text-5xl">
+                {{ getServiceDuration() }}
+            </div>
 
-                TOTAL SERVICE TIME
+
+            <p class="mt-1 text-[8px] font-medium tracking-widest text-indigo-300 md:text-xs">
+
+                HH : MM : SS
 
             </p>
 
@@ -150,19 +141,16 @@
 
         <!-- Services -->
 
-        <div
-            class="mt-4 rounded-lg bg-indigo-950/50 p-3 md:mt-5 md:rounded-xl md:p-4">
+        <div class="mt-4 rounded-lg bg-indigo-950/50 p-3 md:mt-5 md:rounded-xl md:p-4">
 
-            <p
-                class="mb-2 text-[9px] font-bold uppercase tracking-wide text-indigo-200 md:mb-3 md:text-xs">
+            <p class="mb-2 text-[9px] font-bold uppercase tracking-wide text-indigo-200 md:mb-3 md:text-xs">
 
                 Services In This Session
 
             </p>
 
 
-            <div
-                class="flex items-center gap-3 rounded-lg bg-indigo-800/70 px-3 py-2.5 md:rounded-xl md:px-4 md:py-3">
+            <div class="flex items-center gap-3 rounded-lg bg-indigo-800/70 px-3 py-2.5 md:rounded-xl md:px-4 md:py-3">
 
                 <div
                     class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-indigo-700 text-lg md:h-12 md:w-12 md:rounded-lg md:text-2xl">
@@ -172,16 +160,14 @@
                 </div>
 
 
-                <span
-                    class="flex-1 text-xs font-semibold md:text-base">
+                <span class="flex-1 text-xs font-semibold md:text-base">
 
                     {{ currentCustomer.services }}
 
                 </span>
 
 
-                <span
-                    class="text-xs font-semibold text-indigo-100 md:text-base">
+                <span class="text-xs font-semibold text-indigo-100 md:text-base">
 
                     {{ currentCustomer.totalDurationMinutes }} min
 
@@ -206,9 +192,9 @@
 
             <div class="grid grid-cols-2 items-stretch gap-3 md:gap-4">
 
-                <button
-                    type="button"
-                    class="flex h-12 items-center justify-center rounded-lg bg-green-500/90 px-3 text-xs font-bold text-white shadow-sm transition hover:bg-green-500/80 md:h-14 md:rounded-xl md:text-sm">
+                <button type="button" (click)="startService()"
+                    [disabled]="!currentCustomer || currentCustomer.status === 'IN_SERVICE'"
+                    class="flex h-12 items-center justify-center rounded-lg bg-green-500/90 px-3 text-xs font-bold text-white shadow-sm transition hover:bg-green-500/80 disabled:cursor-not-allowed disabled:opacity-50 md:h-14 md:rounded-xl md:text-sm">
 
                     <span class="mr-2">▶</span>
 
@@ -217,8 +203,7 @@
                 </button>
 
 
-                <button
-                    type="button"
+                <button type="button"
                     class="flex h-12 items-center justify-center rounded-lg bg-red-500/90 px-3 text-xs font-bold text-white shadow-sm transition hover:bg-red-500/80 md:h-14 md:rounded-xl md:text-sm">
 
                     <span class="mr-2">✓</span>
@@ -232,8 +217,7 @@
 
             <div class="grid grid-cols-2 items-stretch gap-3 md:gap-4">
 
-                <button
-                    type="button"
+                <button type="button"
                     class="flex h-12 items-center justify-center rounded-lg border border-indigo-300/60 px-3 text-xs font-semibold text-white transition hover:bg-indigo-800 md:h-14 md:rounded-xl md:text-sm">
 
                     <span class="mr-2 text-lg">＋</span>
@@ -243,8 +227,7 @@
                 </button>
 
 
-                <button
-                    type="button"
+                <button type="button"
                     class="flex h-12 items-center justify-center rounded-lg border border-amber-300/50 bg-amber-400/10 px-3 text-xs font-semibold text-amber-100 transition hover:bg-amber-400/20 md:h-14 md:rounded-xl md:text-sm">
 
                     <span class="mr-2">⏱</span>
@@ -258,8 +241,7 @@
 
             <div class="grid grid-cols-2 items-stretch gap-3 md:gap-4">
 
-                <button
-                    type="button"
+                <button type="button"
                     class="flex h-12 items-center justify-center rounded-lg border border-red-300/60 bg-red-500/10 px-3 text-xs font-semibold text-red-100 transition hover:bg-red-500/20 md:h-14 md:rounded-xl md:text-sm">
 
                     <span class="mr-2">🚫</span>
@@ -269,8 +251,7 @@
                 </button>
 
 
-                <button
-                    type="button"
+                <button type="button"
                     class="flex h-12 items-center justify-center rounded-lg border border-sky-300/50 bg-sky-400/10 px-3 text-xs font-semibold text-sky-100 transition hover:bg-sky-400/20 md:h-14 md:rounded-xl md:text-sm">
 
                     <span class="mr-2">📞</span>
@@ -294,8 +275,7 @@
 
         <div class="flex flex-col items-center justify-center py-10 text-center">
 
-            <div
-                class="flex h-16 w-16 items-center justify-center rounded-full bg-indigo-800 text-2xl">
+            <div class="flex h-16 w-16 items-center justify-center rounded-full bg-indigo-800 text-2xl">
 
                 ✂
 
@@ -402,66 +382,56 @@
 </section>
 
 <!-- Shortcut Actions -->
-<section
-  class="rounded-xl border border-gray-200 bg-white p-3 shadow-sm md:rounded-2xl md:p-6"
->
-  <!-- Section Title -->
-  <h2
-    class="mb-2.5 text-[10px] font-bold uppercase tracking-wide text-gray-800 md:mb-5 md:text-lg"
-  >
-    Shortcut Actions
-  </h2>
+<section class="rounded-xl border border-gray-200 bg-white p-3 shadow-sm md:rounded-2xl md:p-6">
+    <!-- Section Title -->
+    <h2 class="mb-2.5 text-[10px] font-bold uppercase tracking-wide text-gray-800 md:mb-5 md:text-lg">
+        Shortcut Actions
+    </h2>
 
-  <!-- Action Buttons -->
-  <div class="grid grid-cols-2 gap-2.5 md:gap-4">
+    <!-- Action Buttons -->
+    <div class="grid grid-cols-2 gap-2.5 md:gap-4">
 
-    <!-- Start Break -->
-    <button
-      type="button"
-      class="flex min-h-[58px] w-full items-center gap-2 rounded-lg bg-green-50 px-2.5 py-2 text-left transition hover:bg-green-100 md:min-h-[90px] md:gap-4 md:rounded-xl md:px-5 md:py-3"
-    >
-      <!-- Icon -->
-      <div
-        class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-green-600 text-sm text-green-600 md:h-14 md:w-14 md:text-2xl"
-      >
-        ▶
-      </div>
+        <!-- Start Break -->
+        <button type="button"
+            class="flex min-h-[58px] w-full items-center gap-2 rounded-lg bg-green-50 px-2.5 py-2 text-left transition hover:bg-green-100 md:min-h-[90px] md:gap-4 md:rounded-xl md:px-5 md:py-3">
+            <!-- Icon -->
+            <div
+                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-green-600 text-sm text-green-600 md:h-14 md:w-14 md:text-2xl">
+                ▶
+            </div>
 
-      <!-- Content -->
-      <div class="min-w-0">
-        <p class="text-[10px] font-bold leading-tight text-green-700 md:text-base">
-          Start Break
-        </p>
+            <!-- Content -->
+            <div class="min-w-0">
+                <p class="text-[10px] font-bold leading-tight text-green-700 md:text-base">
+                    Start Break
+                </p>
 
-        <p class="mt-0.5 text-[8px] font-medium leading-tight text-gray-500 md:mt-1 md:text-sm">
-          Take a short break
-        </p>
-      </div>
-    </button>
+                <p class="mt-0.5 text-[8px] font-medium leading-tight text-gray-500 md:mt-1 md:text-sm">
+                    Take a short break
+                </p>
+            </div>
+        </button>
 
-    <!-- Lunch Time -->
-    <button
-      type="button"
-      class="flex min-h-[58px] w-full items-center gap-2 rounded-lg bg-orange-50 px-2.5 py-2 text-left transition hover:bg-orange-100 md:min-h-[90px] md:gap-4 md:rounded-xl md:px-5 md:py-3"
-    >
-      <!-- Icon -->
-      <div
-        class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-orange-500 text-sm text-orange-500 md:h-14 md:w-14 md:text-2xl"
-      >
-        🍽
-      </div>
+        <!-- Lunch Time -->
+        <button type="button"
+            class="flex min-h-[58px] w-full items-center gap-2 rounded-lg bg-orange-50 px-2.5 py-2 text-left transition hover:bg-orange-100 md:min-h-[90px] md:gap-4 md:rounded-xl md:px-5 md:py-3">
+            <!-- Icon -->
+            <div
+                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-orange-500 text-sm text-orange-500 md:h-14 md:w-14 md:text-2xl">
+                🍽
+            </div>
 
-      <!-- Content -->
-      <div class="min-w-0">
-        <p class="text-[10px] font-bold leading-tight text-orange-700 md:text-base">
-          Lunch Time
-        </p>
+            <!-- Content -->
+            <div class="min-w-0">
+                <p class="text-[10px] font-bold leading-tight text-orange-700 md:text-base">
+                    Lunch Time
+                </p>
 
-        <p class="mt-0.5 text-[8px] font-medium leading-tight text-gray-500 md:mt-1 md:text-sm">
-          Take your lunch break
-        </p>
-      </div>
-    </button>
+                <p class="mt-0.5 text-[8px] font-medium leading-tight text-gray-500 md:mt-1 md:text-sm">
+                    Take your lunch break
+                </p>
+            </div>
+        </button>
 
-  </div>
+    </div>
 </section>

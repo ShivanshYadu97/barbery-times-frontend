@@ -27,9 +27,19 @@ import {
 
   getBarberQueueRequest,
   getBarberQueueSuccess,
-  getBarberQueueFailure
+  getBarberQueueFailure,
+
+  // START SERVICE
+  startServiceRequest,
+  startServiceSuccess,
+  startServiceFailure
+
 } from './barber.action';
 
+
+// ==========================================
+// BARBER STATE
+// ==========================================
 
 export interface BarberState {
 
@@ -44,6 +54,10 @@ export interface BarberState {
 }
 
 
+// ==========================================
+// INITIAL STATE
+// ==========================================
+
 const initialState: BarberState = {
 
   barbers: [],
@@ -56,6 +70,10 @@ const initialState: BarberState = {
 
 };
 
+
+// ==========================================
+// BARBER REDUCER
+// ==========================================
 
 export const barberReducer = createReducer(
 
@@ -75,12 +93,17 @@ export const barberReducer = createReducer(
     getCustomerBarbersRequest,
     getBarberQueueRequest,
 
+    // START SERVICE REQUEST
+    startServiceRequest,
+
     (state) => ({
+
       ...state,
 
       loading: true,
 
       error: null
+
     })
   ),
 
@@ -98,12 +121,17 @@ export const barberReducer = createReducer(
     getCustomerBarbersFailure,
     getBarberQueueFailure,
 
+    // START SERVICE FAILURE
+    startServiceFailure,
+
     (state, action) => ({
+
       ...state,
 
       loading: false,
 
       error: action.error
+
     })
   ),
 
@@ -116,6 +144,7 @@ export const barberReducer = createReducer(
     createBarberSuccess,
 
     (state, action) => ({
+
       ...state,
 
       loading: false,
@@ -126,6 +155,7 @@ export const barberReducer = createReducer(
         ...state.barbers,
         action.payload
       ]
+
     })
   ),
 
@@ -139,6 +169,7 @@ export const barberReducer = createReducer(
     getCustomerBarbersSuccess,
 
     (state, action) => ({
+
       ...state,
 
       loading: false,
@@ -146,6 +177,7 @@ export const barberReducer = createReducer(
       error: null,
 
       barbers: action.payload
+
     })
   ),
 
@@ -158,6 +190,7 @@ export const barberReducer = createReducer(
     updateBarberSuccess,
 
     (state, action) => ({
+
       ...state,
 
       loading: false,
@@ -165,11 +198,17 @@ export const barberReducer = createReducer(
       error: null,
 
       barbers: state.barbers.map(
+
         (barber) =>
+
           barber.id === action.payload.id
+
             ? action.payload
+
             : barber
+
       )
+
     })
   ),
 
@@ -182,6 +221,7 @@ export const barberReducer = createReducer(
     deleteBarberSuccess,
 
     (state, action) => ({
+
       ...state,
 
       loading: false,
@@ -189,17 +229,25 @@ export const barberReducer = createReducer(
       error: null,
 
       barbers: state.barbers.map(
+
         (barber) =>
+
           barber.id === action.barberId
+
             ? {
+
                 ...barber,
 
                 active: false,
 
                 shiftActive: false
+
               }
+
             : barber
+
       )
+
     })
   ),
 
@@ -212,6 +260,7 @@ export const barberReducer = createReducer(
     updateBarberShiftSuccess,
 
     (state, action) => ({
+
       ...state,
 
       loading: false,
@@ -219,11 +268,17 @@ export const barberReducer = createReducer(
       error: null,
 
       barbers: state.barbers.map(
+
         (barber) =>
+
           barber.id === action.payload.id
+
             ? action.payload
+
             : barber
+
       )
+
     })
   ),
 
@@ -236,6 +291,7 @@ export const barberReducer = createReducer(
     getBarberQueueSuccess,
 
     (state, action) => ({
+
       ...state,
 
       loading: false,
@@ -243,6 +299,40 @@ export const barberReducer = createReducer(
       error: null,
 
       queue: action.payload
+
+    })
+  ),
+
+
+  // ==========================================
+  // START SERVICE SUCCESS
+  // ==========================================
+  //
+
+
+  on(
+    startServiceSuccess,
+
+    (state, action) => ({
+
+      ...state,
+
+      loading: false,
+
+      error: null,
+
+      queue: state.queue.map(
+
+        (customer) =>
+
+          customer.id === action.payload.id
+
+            ? action.payload
+
+            : customer
+
+      )
+
     })
   )
 

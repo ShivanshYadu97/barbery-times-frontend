@@ -195,3 +195,41 @@ export const getBarberQueueFailure = createAction(
   }>()
 
 );
+
+
+
+// =============================
+// START SERVICE
+// =============================
+
+export const startServiceRequest = createAction(
+
+  '[Barber] Start Service Request',
+
+  props<{
+    queueId: number;
+  }>()
+
+);
+
+
+export const startServiceSuccess = createAction(
+
+  '[Barber] Start Service Success',
+
+  props<{
+    payload: any;
+  }>()
+
+);
+
+
+export const startServiceFailure = createAction(
+
+  '[Barber] Start Service Failure',
+
+  props<{
+    error: any;
+  }>()
+
+);
