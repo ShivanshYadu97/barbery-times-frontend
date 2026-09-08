@@ -203,8 +203,9 @@
                 </button>
 
 
-                <button type="button"
-                    class="flex h-12 items-center justify-center rounded-lg bg-red-500/90 px-3 text-xs font-bold text-white shadow-sm transition hover:bg-red-500/80 md:h-14 md:rounded-xl md:text-sm">
+                <button type="button" (click)="stopService()"
+                    [disabled]="!currentCustomer || currentCustomer.status !== 'IN_SERVICE'"
+                    class="flex h-12 items-center justify-center rounded-lg bg-red-500/90 px-3 text-xs font-bold text-white shadow-sm transition hover:bg-red-500/80 disabled:cursor-not-allowed disabled:opacity-50 md:h-14 md:rounded-xl md:text-sm">
 
                     <span class="mr-2">✓</span>
 

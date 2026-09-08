@@ -32,7 +32,11 @@ import {
   // START SERVICE
   startServiceRequest,
   startServiceSuccess,
-  startServiceFailure
+  startServiceFailure,
+
+  stopServiceRequest,
+  stopServiceSuccess,
+  stopServiceFailure
 
 } from './barber.action';
 
@@ -236,13 +240,13 @@ export const barberReducer = createReducer(
 
             ? {
 
-                ...barber,
+              ...barber,
 
-                active: false,
+              active: false,
 
-                shiftActive: false
+              shiftActive: false
 
-              }
+            }
 
             : barber
 
@@ -334,6 +338,35 @@ export const barberReducer = createReducer(
       )
 
     })
-  )
+  ),
+
+
+  // ==========================================
+  // STOP SERVICE SUCCESS
+  // ==========================================
+  //
+
+
+
+  on(stopServiceRequest, (state) => ({
+    ...state,
+    loading: true,
+    error: null
+  })),
+
+  on(stopServiceSuccess, (state, { queueId }) => ({
+    ...state,
+    queue: state.queue.filter(
+      customer => customer.id !== queueId
+    ),
+    loading: false,
+    error: null
+  })),
+
+  on(stopServiceFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error
+  })),
 
 );

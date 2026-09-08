@@ -11,7 +11,8 @@ import { BarberService } from 'src/app/State/Barber/barber.service';
 import { BarberState } from 'src/app/State/Barber/barber.reducer';
 
 import {
-  startServiceRequest
+  startServiceRequest,
+  stopServiceRequest
 } from 'src/app/State/Barber/barber.action';
 
 
@@ -70,6 +71,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private queueSubscription?: Subscription;
 
   private startServiceSubscription?: Subscription;
+
+  private stopServiceSubscription?: Subscription;
 
 
   constructor(
@@ -308,6 +311,93 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   }
 
+
+
+  // ==========================================
+  // STOP SERVICE
+  // ==========================================
+
+  // ==========================================
+  // STOP SERVICE
+  // ==========================================
+
+  stopService(): void {
+
+    // Current customer nahi hai
+    if (!this.currentCustomer) {
+      return;
+    }
+
+    // Customer service mein nahi hai
+    if (this.currentCustomer.status !== 'IN_SERVICE') {
+      return;
+    }
+
+    const queueId =
+      this.currentCustomer.id;
+
+
+    // ==========================================
+    // DISPATCH REQUEST ACTION
+    // ==========================================
+
+    this.store.dispatch(
+      stopServiceRequest({
+        queueId
+      })
+    );
+
+
+    // ==========================================
+    // LISTEN FOR CUSTOMER REMOVAL
+    // ==========================================
+
+    this.stopServiceSubscription?.unsubscribe();
+
+    this.stopServiceSubscription =
+      this.store
+        .select((state) => state.barber.queue)
+        .subscribe((queue) => {
+
+          const customerStillInQueue =
+            queue.some(
+              (customer) =>
+                customer.id === queueId
+            );
+
+
+          // ==========================================
+          // CUSTOMER REMOVED FROM STORE
+          // ==========================================
+
+          if (!customerStillInQueue) {
+
+            this.stopServiceSubscription?.unsubscribe();
+
+            this.stopServiceSubscription =
+              undefined;
+
+
+            // ==========================================
+            // LOAD FRESH QUEUE FROM BACKEND
+            // ==========================================
+
+            this.loadBarberQueue();
+
+          }
+
+        });
+
+
+    // ==========================================
+    // CALL BACKEND API
+    // ==========================================
+
+    this.barberService.stopService(queueId);
+
+  }
+
+  //end
 
   // ==========================================
   // START SERVICE TIMER
@@ -625,8 +715,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.startServiceSubscription?.unsubscribe();
 
+    this.stopServiceSubscription?.unsubscribe();
+
     this.stopServiceTimer();
 
   }
-
 }

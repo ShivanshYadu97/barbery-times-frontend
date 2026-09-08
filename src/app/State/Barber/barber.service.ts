@@ -29,7 +29,10 @@ import {
 
   // START SERVICE
   startServiceSuccess,
-  startServiceFailure
+  startServiceFailure,
+
+  stopServiceSuccess,
+  stopServiceFailure
 
 } from './barber.action';
 
@@ -472,5 +475,36 @@ export class BarberService {
     });
 
   }
+
+
+  // ==========================================
+  // STOP SERVICE
+  // ==========================================
+
+  stopService(queueId: number): void {
+
+    this.http.post(
+      `http://localhost:8080/api/queue/${queueId}/stop`,
+      {},
+      { responseType: 'text' }
+    ).subscribe({
+      next: () => {
+
+        this.store.dispatch(
+          stopServiceSuccess({ queueId })
+        );
+
+      },
+
+      error: (error) => {
+
+        this.store.dispatch(
+          stopServiceFailure({ error })
+        );
+
+      }
+    });
+  }
+
 
 }

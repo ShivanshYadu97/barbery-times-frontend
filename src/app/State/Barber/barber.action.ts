@@ -233,3 +233,24 @@ export const startServiceFailure = createAction(
   }>()
 
 );
+
+
+
+// ==========================================
+// STOP SERVICE
+// ==========================================
+
+export const stopServiceRequest = createAction(
+  '[Barber] Stop Service Request',
+  props<{ queueId: number }>()
+);
+
+export const stopServiceSuccess = createAction(
+  '[Barber] Stop Service Success',
+  props<{ queueId: number }>()
+);
+
+export const stopServiceFailure = createAction(
+  '[Barber] Stop Service Failure',
+  props<{ error: any }>()
+);
