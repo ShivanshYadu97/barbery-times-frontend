@@ -254,3 +254,24 @@ export const stopServiceFailure = createAction(
   '[Barber] Stop Service Failure',
   props<{ error: any }>()
 );
+
+
+
+// ==========================================
+// MARK NOT PRESENT SERVICE
+// ==========================================
+
+export const markNotPresentRequest = createAction(
+  '[Barber] Mark Not Present Request',
+  props<{ queueId: number }>()
+);
+
+export const markNotPresentSuccess = createAction(
+  '[Barber] Mark Not Present Success',
+  props<{ queueId: number }>()
+);
+
+export const markNotPresentFailure = createAction(
+  '[Barber] Mark Not Present Failure',
+  props<{ error: any }>()
+);

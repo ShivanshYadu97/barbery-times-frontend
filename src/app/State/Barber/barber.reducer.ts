@@ -34,9 +34,15 @@ import {
   startServiceSuccess,
   startServiceFailure,
 
+  // STOP SERVICE
   stopServiceRequest,
   stopServiceSuccess,
-  stopServiceFailure
+  stopServiceFailure,
+
+  // MARK NOT PRESENT
+  markNotPresentRequest,
+  markNotPresentSuccess,
+  markNotPresentFailure
 
 } from './barber.action';
 
@@ -97,8 +103,14 @@ export const barberReducer = createReducer(
     getCustomerBarbersRequest,
     getBarberQueueRequest,
 
-    // START SERVICE REQUEST
+    // START SERVICE
     startServiceRequest,
+
+    // STOP SERVICE
+    stopServiceRequest,
+
+    // MARK NOT PRESENT
+    markNotPresentRequest,
 
     (state) => ({
 
@@ -125,8 +137,14 @@ export const barberReducer = createReducer(
     getCustomerBarbersFailure,
     getBarberQueueFailure,
 
-    // START SERVICE FAILURE
+    // START SERVICE
     startServiceFailure,
+
+    // STOP SERVICE
+    stopServiceFailure,
+
+    // MARK NOT PRESENT
+    markNotPresentFailure,
 
     (state, action) => ({
 
@@ -311,8 +329,6 @@ export const barberReducer = createReducer(
   // ==========================================
   // START SERVICE SUCCESS
   // ==========================================
-  //
-
 
   on(
     startServiceSuccess,
@@ -344,29 +360,50 @@ export const barberReducer = createReducer(
   // ==========================================
   // STOP SERVICE SUCCESS
   // ==========================================
-  //
+
+  on(
+    stopServiceSuccess,
+
+    (state, { queueId }) => ({
+
+      ...state,
+
+      queue: state.queue.filter(
+
+        customer => customer.id !== queueId
+
+      ),
+
+      loading: false,
+
+      error: null
+
+    })
+  ),
 
 
+  // ==========================================
+  // MARK NOT PRESENT SUCCESS
+  // ==========================================
 
-  on(stopServiceRequest, (state) => ({
-    ...state,
-    loading: true,
-    error: null
-  })),
+  on(
+    markNotPresentSuccess,
 
-  on(stopServiceSuccess, (state, { queueId }) => ({
-    ...state,
-    queue: state.queue.filter(
-      customer => customer.id !== queueId
-    ),
-    loading: false,
-    error: null
-  })),
+    (state, { queueId }) => ({
 
-  on(stopServiceFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error
-  })),
+      ...state,
+
+      queue: state.queue.filter(
+
+        customer => customer.id !== queueId
+
+      ),
+
+      loading: false,
+
+      error: null
+
+    })
+  )
 
 );

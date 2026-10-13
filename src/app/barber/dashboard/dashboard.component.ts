@@ -12,7 +12,8 @@ import { BarberState } from 'src/app/State/Barber/barber.reducer';
 
 import {
   startServiceRequest,
-  stopServiceRequest
+  stopServiceRequest,
+  markNotPresentRequest
 } from 'src/app/State/Barber/barber.action';
 
 
@@ -58,7 +59,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   serviceTimerSeconds: number = 0;
 
-  // 5 minutes = 300 seconds
   showServiceWarning: boolean = false;
 
   private serviceTimer?: ReturnType<typeof setInterval>;
@@ -71,8 +71,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private queueSubscription?: Subscription;
 
   private startServiceSubscription?: Subscription;
-
-  private stopServiceSubscription?: Subscription;
 
 
   constructor(
@@ -143,6 +141,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         .select((state) => state.barber.queue)
         .subscribe((queue) => {
 
+
           // ==========================================
           // NO QUEUE
           // ==========================================
@@ -172,6 +171,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
           // UPCOMING QUEUE
           // ==========================================
 
+          /*
+           * estimatedStartTime use nahi karna.
+           *
+           * Current IN_SERVICE customer ke
+           * serviceStartedAt se remaining time niklega.
+           *
+           * Uske baad har waiting customer ki
+           * totalDurationMinutes sequentially add hogi.
+           */
+
+          let nextWaitMinutes = 0;
+
+
           this.upcomingQueue =
             queue
               .filter(
@@ -179,29 +191,137 @@ export class DashboardComponent implements OnInit, OnDestroy {
                   customer.status === 'WAITING' ||
                   customer.status === 'IN_SERVICE'
               )
-              .map((customer) => ({
+              .map((customer) => {
 
-                position:
-                  customer.queuePosition,
 
-                name:
-                  customer.customerName,
+                // ==========================================
+                // CURRENT CUSTOMER
+                // ==========================================
 
-                service:
-                  customer.services,
+                if (
+                  customer.status === 'IN_SERVICE' &&
+                  customer.serviceStartedAt
+                ) {
 
-                source:
-                  'Online',
+                  const serviceStartedAt =
+                    new Date(
+                      customer.serviceStartedAt
+                    ).getTime();
 
-                waitTime:
-                  this.calculateWaitTime(
-                    customer.estimatedStartTime
-                  ),
 
-                avatar:
-                  `https://i.pravatar.cc/100?u=${customer.customerId}`
+                  const elapsedMinutes =
+                    Math.floor(
+                      (
+                        Date.now() -
+                        serviceStartedAt
+                      ) / 60000
+                    );
 
-              }));
+
+                  const remainingMinutes =
+                    Math.max(
+                      Number(
+                        customer.totalDurationMinutes || 0
+                      ) - elapsedMinutes,
+                      0
+                    );
+
+
+                  /*
+                   * Current service ka remaining time
+                   * first waiting customer ka wait time hai.
+                   */
+
+                  nextWaitMinutes =
+                    remainingMinutes;
+
+
+                  return {
+
+                    position:
+                      customer.queuePosition,
+
+                    name:
+                      customer.customerName,
+
+                    service:
+                      customer.services,
+
+                    source:
+                      'Online',
+
+                    waitTime:
+                      'Now',
+
+                    /*
+                     * IMPORTANT:
+                     * Timer ke andar next customers ki
+                     * duration calculate karne ke liye
+                     * duration yahan save kar rahe hain.
+                     */
+
+                    duration:
+                      Number(
+                        customer.totalDurationMinutes || 0
+                      ),
+
+                    avatar:
+                      `https://i.pravatar.cc/100?u=${customer.customerId}`
+
+                  };
+
+                }
+
+
+                // ==========================================
+                // WAITING CUSTOMER
+                // ==========================================
+
+                const waitMinutes =
+                  nextWaitMinutes;
+
+
+                /*
+                 * Is customer ki service duration
+                 * next customer ke wait time mein add hogi.
+                 */
+
+                nextWaitMinutes +=
+                  Number(
+                    customer.totalDurationMinutes || 0
+                  );
+
+
+                return {
+
+                  position:
+                    customer.queuePosition,
+
+                  name:
+                    customer.customerName,
+
+                  service:
+                    customer.services,
+
+                  source:
+                    'Online',
+
+                  waitTime:
+                    waitMinutes <= 0
+                      ? 'Now'
+                      : `~${waitMinutes} min`,
+
+                  duration:
+                    Number(
+                      customer.totalDurationMinutes || 0
+                    ),
+
+                  avatar:
+                    `https://i.pravatar.cc/100?u=${customer.customerId}`
+
+                };
+
+              });
 
 
           // ==========================================
@@ -235,13 +355,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   startService(): void {
 
-    // Current customer nahi hai
     if (!this.currentCustomer) {
       return;
     }
 
 
-    // Already service running hai
     if (
       this.currentCustomer.status === 'IN_SERVICE'
     ) {
@@ -272,10 +390,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
     // ==========================================
-    // SUCCESS RESPONSE STORE SE LISTEN
+    // LISTEN FOR STORE UPDATE
     // ==========================================
 
     this.startServiceSubscription?.unsubscribe();
+
 
     this.startServiceSubscription =
       this.store
@@ -298,9 +417,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.currentCustomer =
               updatedCustomer;
 
+
             this.startServiceTimer();
 
+
             this.startServiceSubscription?.unsubscribe();
+
 
             this.startServiceSubscription =
               undefined;
@@ -312,26 +434,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
 
-
-  // ==========================================
-  // STOP SERVICE
-  // ==========================================
-
   // ==========================================
   // STOP SERVICE
   // ==========================================
 
   stopService(): void {
 
-    // Current customer nahi hai
     if (!this.currentCustomer) {
       return;
     }
 
-    // Customer service mein nahi hai
-    if (this.currentCustomer.status !== 'IN_SERVICE') {
+
+    if (
+      this.currentCustomer.status !== 'IN_SERVICE'
+    ) {
       return;
     }
+
 
     const queueId =
       this.currentCustomer.id;
@@ -349,47 +468,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
     // ==========================================
-    // LISTEN FOR CUSTOMER REMOVAL
-    // ==========================================
-
-    this.stopServiceSubscription?.unsubscribe();
-
-    this.stopServiceSubscription =
-      this.store
-        .select((state) => state.barber.queue)
-        .subscribe((queue) => {
-
-          const customerStillInQueue =
-            queue.some(
-              (customer) =>
-                customer.id === queueId
-            );
-
-
-          // ==========================================
-          // CUSTOMER REMOVED FROM STORE
-          // ==========================================
-
-          if (!customerStillInQueue) {
-
-            this.stopServiceSubscription?.unsubscribe();
-
-            this.stopServiceSubscription =
-              undefined;
-
-
-            // ==========================================
-            // LOAD FRESH QUEUE FROM BACKEND
-            // ==========================================
-
-            this.loadBarberQueue();
-
-          }
-
-        });
-
-
-    // ==========================================
     // CALL BACKEND API
     // ==========================================
 
@@ -397,7 +475,61 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   }
 
-  //end
+
+  // ==========================================
+  // MARK NOT PRESENT
+  // ==========================================
+
+  markNotPresent(): void {
+
+    if (!this.currentCustomer) {
+      return;
+    }
+
+
+    if (
+      this.currentCustomer.status !== 'WAITING'
+    ) {
+      return;
+    }
+
+
+    const queueId =
+      this.currentCustomer.id;
+
+
+    // ==========================================
+    // DISPATCH REQUEST ACTION
+    // ==========================================
+
+    this.store.dispatch(
+      markNotPresentRequest({
+        queueId
+      })
+    );
+
+
+    // ==========================================
+    // CALL BACKEND API
+    // ==========================================
+
+    this.barberService.markNotPresent(
+      queueId
+    );
+
+
+    // ==========================================
+    // LOAD FRESH QUEUE
+    // ==========================================
+
+    setTimeout(() => {
+
+      this.loadBarberQueue();
+
+    }, 300);
+
+  }
+
 
   // ==========================================
   // START SERVICE TIMER
@@ -436,7 +568,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
     // ==========================================
-    // BACKEND SERVICE START TIME
+    // SERVICE STARTED AT
     // ==========================================
 
     const serviceStartedAt =
@@ -457,7 +589,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       const elapsedSeconds =
         Math.floor(
-          (currentTime - serviceStartedAt) / 1000
+          (
+            currentTime -
+            serviceStartedAt
+          ) / 1000
         );
 
 
@@ -474,17 +609,97 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
       // ==========================================
-      // 5 MINUTE WARNING
+      // UPDATE UPCOMING QUEUE WAIT TIME
+      // ==========================================
+
+      /*
+       * Example:
+       *
+       * Current customer = 27 min remaining
+       *
+       * Priya = 20 min
+       * Mukta = 15 min
+       * Amit  = 25 min
+       *
+       * Result:
+       *
+       * Current → Now
+       * Priya   → ~27 min
+       * Mukta   → ~47 min
+       * Amit    → ~62 min
+       */
+
+      let waitMinutes =
+        Math.ceil(
+          this.serviceTimerSeconds / 60
+        );
+
+
+      this.upcomingQueue =
+        this.upcomingQueue.map(
+          (customer, index) => {
+
+
+            // ==========================================
+            // CURRENT CUSTOMER
+            // ==========================================
+
+            if (index === 0) {
+
+              return {
+
+                ...customer,
+
+                waitTime:
+                  'Now'
+
+              };
+
+            }
+
+
+            // ==========================================
+            // WAITING CUSTOMER
+            // ==========================================
+
+            const currentWait =
+              waitMinutes;
+
+
+            /*
+             * Current customer ka remaining time
+             * + previous waiting customers ki
+             * service duration.
+             */
+
+            waitMinutes +=
+              Number(
+                customer.duration || 0
+              );
+
+
+            return {
+
+              ...customer,
+
+              waitTime:
+                currentWait <= 0
+                  ? 'Now'
+                  : `~${currentWait} min`
+
+            };
+
+          }
+        );
+
+
+      // ==========================================
+      // SERVICE WARNING
       // ==========================================
 
       this.showServiceWarning =
         this.serviceTimerSeconds > 0 &&
         this.serviceTimerSeconds <= 300;
-
-      //for 28 min
-      // this.showServiceWarning =
-      //   this.serviceTimerSeconds > 0 &&
-      //   this.serviceTimerSeconds <= 1680;
 
 
       // ==========================================
@@ -504,11 +719,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
     };
 
 
-    // Immediately calculate
+    // ==========================================
+    // FIRST CALCULATION
+    // ==========================================
+
     updateTimer();
 
 
-    // Every second update
+    // ==========================================
+    // EVERY SECOND
+    // ==========================================
+
     this.serviceTimer =
       setInterval(
         updateTimer,
@@ -539,7 +760,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
   // ==========================================
-  // DISPLAY SERVICE TIMER
+  // DISPLAY SERVICE DURATION
   // ==========================================
 
   getServiceDuration(): string {
@@ -549,7 +770,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
 
-    // Service start nahi hua hai
+    // ==========================================
+    // SERVICE NOT STARTED
+    // ==========================================
+
     if (
       this.currentCustomer.status !==
       'IN_SERVICE'
@@ -577,7 +801,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
     // ==========================================
-    // RUNNING TIMER
+    // RUNNING SERVICE
     // ==========================================
 
     const totalSeconds =
@@ -624,6 +848,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // CALCULATE WAIT TIME
   // ==========================================
 
+  /*
+   * Old method retained so existing code/template
+   * break na ho.
+   *
+   * Upcoming Queue mein ab iska use nahi ho raha.
+   * estimatedStartTime par dependency nahi hai.
+   */
+
   calculateWaitTime(
     estimatedStartTime: string
   ): string {
@@ -645,7 +877,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     const remainingMinutes =
       Math.floor(
-        (targetTime - currentTime) / 60000
+        (
+          targetTime -
+          currentTime
+        ) / 60000
       );
 
 
@@ -715,9 +950,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.startServiceSubscription?.unsubscribe();
 
-    this.stopServiceSubscription?.unsubscribe();
-
     this.stopServiceTimer();
 
   }
+
 }

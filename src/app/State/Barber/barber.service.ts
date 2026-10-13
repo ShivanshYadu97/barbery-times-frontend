@@ -31,8 +31,13 @@ import {
   startServiceSuccess,
   startServiceFailure,
 
+  // STOP SERVICE
   stopServiceSuccess,
-  stopServiceFailure
+  stopServiceFailure,
+
+  // MARK NOT PRESENT
+  markNotPresentSuccess,
+  markNotPresentFailure
 
 } from './barber.action';
 
@@ -425,7 +430,6 @@ export class BarberService {
   // START SERVICE
   // ==========================================
 
-
   startService(
     queueId: number
   ) {
@@ -484,10 +488,11 @@ export class BarberService {
   stopService(queueId: number): void {
 
     this.http.post(
-      `http://localhost:8080/api/queue/${queueId}/stop`,
+      `${this.API_BASE_URL}/api/queue/${queueId}/stop`,
       {},
       { responseType: 'text' }
     ).subscribe({
+
       next: () => {
 
         this.store.dispatch(
@@ -503,7 +508,42 @@ export class BarberService {
         );
 
       }
+
     });
+
+  }
+
+
+  // ==========================================
+  // MARK NOT PRESENT
+  // ==========================================
+
+  markNotPresent(queueId: number): void {
+
+    this.http.post(
+      `${this.API_BASE_URL}/api/queue/${queueId}/not-present`,
+      {},
+      { responseType: 'text' }
+    ).subscribe({
+
+      next: () => {
+
+        this.store.dispatch(
+          markNotPresentSuccess({ queueId })
+        );
+
+      },
+
+      error: (error) => {
+
+        this.store.dispatch(
+          markNotPresentFailure({ error })
+        );
+
+      }
+
+    });
+
   }
 
 

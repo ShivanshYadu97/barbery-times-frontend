@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Temporary testing IDs
   // Later these will come from logged-in customer/shop
   shopId = 1;
-  customerId = 1;
+  customerId = 4;
 
   queue: any = null;
 
