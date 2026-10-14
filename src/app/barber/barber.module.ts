@@ -8,6 +8,7 @@ import { BarberLayoutComponent } from './layout/barber-layout/barber-layout.comp
 import { HeaderComponent } from './layout/header/header.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { SharedModule } from '../shared/shared.module';
+import { AddServicePopUpFormComponent } from './add-service-pop-up-form/add-service-pop-up-form.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { SharedModule } from '../shared/shared.module';
     DashboardComponent,
     BarberLayoutComponent,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    AddServicePopUpFormComponent
   ],
   imports: [
     CommonModule,

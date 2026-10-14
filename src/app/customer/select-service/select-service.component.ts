@@ -1,8 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
-import { BASE_API_URL } from 'src/app/config/api';
+
+
+import {
+  loadShopServices,
+  loadShopServicesFailure,
+  loadShopServicesSuccess
+} from 'src/app/State/Customer/customer.action';
+import { CustomerService } from 'src/app/State/Customer/customer.service';
 
 @Component({
   selector: 'app-select-service',
@@ -15,7 +22,6 @@ export class SelectServiceComponent implements OnInit {
   selectedBarber: any = null;
 
   selectedServices: any[] = [];
-
   services: any[] = [];
 
   loading = false;
@@ -23,7 +29,8 @@ export class SelectServiceComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private http: HttpClient
+    private store: Store,
+    private customerService: CustomerService
   ) {}
 
   ngOnInit(): void {
@@ -47,15 +54,24 @@ export class SelectServiceComponent implements OnInit {
 
     const shopId = this.selectedShop.id;
 
-    const url =
-      `${BASE_API_URL}/api/barber-menu/shop/${shopId}/customer`;
+    // NgRx loading action
+    this.store.dispatch(
+      loadShopServices({ shopId })
+    );
 
-    this.http.get<any[]>(url).subscribe({
+    // CustomerService ke through API call
+    this.customerService.getActiveServicesByShop(shopId).subscribe({
+
       next: (data) => {
 
         console.log('Customer services:', data);
 
         this.services = data;
+
+        // NgRx success action
+        this.store.dispatch(
+          loadShopServicesSuccess({ services: data })
+        );
 
         this.loading = false;
       },
@@ -65,6 +81,11 @@ export class SelectServiceComponent implements OnInit {
         console.error('Failed to load services:', error);
 
         this.error = 'Unable to load services. Please try again.';
+
+        // NgRx failure action
+        this.store.dispatch(
+          loadShopServicesFailure({ error: this.error })
+        );
 
         this.loading = false;
       }
@@ -90,13 +111,9 @@ export class SelectServiceComponent implements OnInit {
     );
 
     if (index > -1) {
-
       this.selectedServices.splice(index, 1);
-
     } else {
-
       this.selectedServices.push(service);
-
     }
   }
 

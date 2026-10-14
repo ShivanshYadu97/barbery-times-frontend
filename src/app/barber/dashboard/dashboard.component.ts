@@ -73,6 +73,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private startServiceSubscription?: Subscription;
 
 
+  // ADD EXTRA SERVICE POPUP
+  showAddServicePopup: boolean = false;
+
+
+
   constructor(
     private barberService: BarberService,
     private store: Store<{ barber: BarberState }>
@@ -682,10 +687,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
               ...customer,
 
+
               waitTime:
                 currentWait <= 0
                   ? 'Now'
-                  : `~${currentWait} min`
+                  : currentWait < 60
+                    ? `~${currentWait} min`
+                    : currentWait % 60 === 0
+                      ? `~${Math.floor(currentWait / 60)}h`
+                      : `~${Math.floor(currentWait / 60)}h ${currentWait % 60}m`
+
 
             };
 
@@ -915,6 +926,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     return `~${hours}h ${minutes}m`;
 
+  }
+
+  // ==========================================
+  // Open pop-up add extra service
+  // ==========================================
+
+  openAddServicePopup(): void {
+    this.showAddServicePopup = true;
+  }
+
+  closeAddServicePopup(): void {
+    this.showAddServicePopup = false;
   }
 
 

@@ -1,0 +1,170 @@
+```html
+<div class="popup-overlay">
+  <div class="popup-container">
+
+    <!-- Header -->
+    <div class="popup-header">
+      <div>
+        <h2>Add Extra Service</h2>
+        <p>Select additional services for this customer</p>
+      </div>
+
+      <button
+        class="close-btn"
+        type="button"
+        aria-label="Close"
+        (click)="close()">
+        &times;
+      </button>
+    </div>
+
+    <!-- Available Services Loading -->
+    <div class="section" *ngIf="loading">
+      <p>Loading services...</p>
+    </div>
+
+    <!-- Available Services Error -->
+    <div class="section" *ngIf="!loading && error">
+      <p>{{ error }}</p>
+    </div>
+
+    <ng-container *ngIf="!loading && !error">
+
+      <!-- Existing Services -->
+      <div class="section">
+        <h3>Existing Services</h3>
+
+        <div *ngIf="existingServicesLoading">
+          <p>Loading existing services...</p>
+        </div>
+
+        <div
+          *ngIf="!existingServicesLoading && existingServicesError">
+          <p>{{ existingServicesError }}</p>
+        </div>
+
+        <ng-container
+          *ngIf="!existingServicesLoading && !existingServicesError">
+
+          <ng-container
+            *ngIf="existingServices.length > 0; else noExistingServices">
+
+            <div
+              class="service-item"
+              *ngFor="let item of existingServices">
+
+              <div class="service-info">
+                <span class="service-name">
+                  {{ item.services }}
+                </span>
+
+                <span class="service-meta">
+                  {{ item.totalDurationMinutes }} min · ₹{{ item.totalPrice }}
+                </span>
+              </div>
+
+            </div>
+
+          </ng-container>
+
+          <ng-template #noExistingServices>
+            <p class="section-description">
+              Customer ki current queue mein abhi koi existing service nahi hai.
+            </p>
+          </ng-template>
+
+        </ng-container>
+      </div>
+
+      <!-- Available Services -->
+      <div class="section">
+        <h3>Available Services</h3>
+
+        <p class="section-description">
+          Choose any additional services
+        </p>
+
+        <ng-container
+          *ngIf="availableServices.length > 0; else noServices">
+
+          <label
+            class="service-item"
+            *ngFor="let service of availableServices">
+
+            <div class="service-info">
+              <span class="service-name">
+                {{ service.name }}
+              </span>
+
+              <span class="service-meta">
+                {{ service.durationMinutes }} min · ₹{{ service.price }}
+              </span>
+            </div>
+
+            <input
+              type="checkbox"
+              [checked]="selectedServiceIds.includes(+service.id)"
+              [disabled]="addingExtraServices"
+              (change)="toggleService(
+                +service.id,
+                $any($event.target).checked
+              )" />
+
+          </label>
+
+        </ng-container>
+
+        <ng-template #noServices>
+          <p>No additional services available for this shop.</p>
+        </ng-template>
+      </div>
+
+      <!-- Price Summary -->
+      <div class="price-summary">
+        <div>
+          <span>Additional Duration</span>
+          <strong>{{ getAdditionalDuration() }} min</strong>
+        </div>
+
+        <div>
+          <span>Additional Amount</span>
+          <strong>₹{{ getAdditionalAmount() }}</strong>
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      <div
+        class="section"
+        *ngIf="addExtraServicesError">
+        <p>{{ addExtraServicesError }}</p>
+      </div>
+
+      <!-- Actions -->
+      <div class="popup-actions">
+        <button
+          class="cancel-btn"
+          type="button"
+          [disabled]="addingExtraServices"
+          (click)="close()">
+          Cancel
+        </button>
+
+        <button
+          class="submit-btn"
+          type="button"
+          [disabled]="
+            selectedServiceIds.length === 0 ||
+            addingExtraServices ||
+            !queueId
+          "
+          (click)="addServices()">
+
+          {{ addingExtraServices ? 'Adding...' : 'Add Services' }}
+        </button>
+      </div>
+
+    </ng-container>
+
+  </div>
+</div>
+```
