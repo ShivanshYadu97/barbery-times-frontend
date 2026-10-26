@@ -1,22 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-
-
+import { Subscription } from 'rxjs';
 
 import {
-  loadShopServices,
-  loadShopServicesFailure,
-  loadShopServicesSuccess
+  loadShopServices
 } from 'src/app/State/Customer/customer.action';
-import { CustomerService } from 'src/app/State/Customer/customer.service';
+
+import {
+  CustomerState
+} from 'src/app/State/Customer/customer.reducer';
+
+import {
+  CustomerService
+} from 'src/app/State/Customer/customer.service';
 
 @Component({
   selector: 'app-select-service',
   templateUrl: './select-service.component.html',
   styleUrls: ['./select-service.component.scss']
 })
-export class SelectServiceComponent implements OnInit {
+export class SelectServiceComponent implements OnInit, OnDestroy {
 
   selectedShop: any = null;
   selectedBarber: any = null;
@@ -27,9 +32,11 @@ export class SelectServiceComponent implements OnInit {
   loading = false;
   error = '';
 
+  private storeSubscription?: Subscription;
+
   constructor(
     private router: Router,
-    private store: Store,
+    private store: Store<{ customer: CustomerState }>,
     private customerService: CustomerService
   ) {}
 
@@ -39,12 +46,25 @@ export class SelectServiceComponent implements OnInit {
     this.selectedShop = history.state.shop;
     this.selectedBarber = history.state.barber;
 
+    // NgRx Store se services, loading aur error observe karna
+    this.storeSubscription = this.store
+      .select('customer')
+      .subscribe(state => {
+        this.services = state.services ?? [];
+        this.loading = state.servicesLoading;
+        this.error = state.servicesError ?? '';
+      });
+
     // Selected shop ke services load karo
     if (this.selectedShop?.id) {
       this.loadServices();
     } else {
       this.error = 'Shop information not found.';
     }
+  }
+
+  ngOnDestroy(): void {
+    this.storeSubscription?.unsubscribe();
   }
 
   loadServices(): void {
@@ -59,37 +79,8 @@ export class SelectServiceComponent implements OnInit {
       loadShopServices({ shopId })
     );
 
-    // CustomerService ke through API call
-    this.customerService.getActiveServicesByShop(shopId).subscribe({
-
-      next: (data) => {
-
-        console.log('Customer services:', data);
-
-        this.services = data;
-
-        // NgRx success action
-        this.store.dispatch(
-          loadShopServicesSuccess({ services: data })
-        );
-
-        this.loading = false;
-      },
-
-      error: (error) => {
-
-        console.error('Failed to load services:', error);
-
-        this.error = 'Unable to load services. Please try again.';
-
-        // NgRx failure action
-        this.store.dispatch(
-          loadShopServicesFailure({ error: this.error })
-        );
-
-        this.loading = false;
-      }
-    });
+    // Service API call karke success/failure action dispatch karegi
+    this.customerService.getActiveServicesByShop(shopId);
   }
 
   goBack(): void {

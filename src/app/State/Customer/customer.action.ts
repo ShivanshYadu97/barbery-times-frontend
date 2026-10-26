@@ -45,7 +45,6 @@ export const loadShopServicesFailure = createAction(
   }>()
 );
 
-
 // Load Existing Services of Customer from Current Queue
 export const loadExistingServicesOfCustomer = createAction(
   '[Customer] Load Existing Services Of Customer',
@@ -69,8 +68,6 @@ export const loadExistingServicesOfCustomerFailure = createAction(
   }>()
 );
 
-
-
 // Add Extra Services to Customer Queue
 export const addExtraServices = createAction(
   '[Customer] Add Extra Services',
@@ -93,3 +90,86 @@ export const addExtraServicesFailure = createAction(
     error: string;
   }>()
 );
+
+// Check Customer By Mobile Number
+export const checkCustomerByPhone = createAction(
+  '[Customer] Check Customer By Phone',
+  props<{
+    phone: string;
+  }>()
+);
+
+export const checkCustomerByPhoneSuccess = createAction(
+  '[Customer] Check Customer By Phone Success',
+  props<{
+    exists: boolean;
+    customerId?: number;
+    name?: string;
+    message?: string;
+  }>()
+);
+
+export const checkCustomerByPhoneFailure = createAction(
+  '[Customer] Check Customer By Phone Failure',
+  props<{
+    error: string;
+  }>()
+);
+
+
+// Create New Customer
+
+export const createCustomer = createAction(
+  '[Customer] Create Customer',
+  props<{
+    name: string;
+    phone: string;
+    email: string | null;
+    password: string;
+    role: string;
+  }>()
+);
+
+export const createCustomerSuccess = createAction(
+  '[Customer] Create Customer Success',
+  props<{
+    customer: any;
+  }>()
+);
+
+export const createCustomerFailure = createAction(
+  '[Customer] Create Customer Failure',
+  props<{
+    error: string;
+  }>()
+);
+
+
+
+
+ // Join Queue (Walk-in / Online)
+export const joinQueue = createAction(
+  '[Customer] Join Queue',
+  props<{
+    shopId: number;
+    customerId: number;
+    barberId: number;
+    serviceIds: number[];
+    entryType: 'WALK_IN' | 'ONLINE';
+  }>()
+);
+
+export const joinQueueSuccess = createAction(
+  '[Customer] Join Queue Success',
+  props<{
+    queue: any;
+  }>()
+);
+
+export const joinQueueFailure = createAction(
+  '[Customer] Join Queue Failure',
+  props<{
+    error: string;
+  }>()
+);
+

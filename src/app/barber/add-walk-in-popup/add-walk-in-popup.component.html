@@ -1,0 +1,291 @@
+```html
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+  (click)="close()">
+
+  <div
+    class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
+    (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="mb-6 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <button
+          *ngIf="currentStep !== 'METHOD'"
+          type="button"
+          (click)="goBack()"
+          class="text-xl text-gray-500 hover:text-gray-800"
+          aria-label="Go back">
+          &#8592;
+        </button>
+
+        <h2 class="text-xl font-bold text-gray-900">
+          Add Walk-in
+        </h2>
+      </div>
+
+      <button
+        type="button"
+        (click)="close()"
+        class="text-2xl text-gray-500 hover:text-gray-800"
+        aria-label="Close">
+        &times;
+      </button>
+    </div>
+
+    <!-- Step 1: Choose Method -->
+    <ng-container *ngIf="currentStep === 'METHOD'">
+      <p class="mb-5 text-sm text-gray-500">
+        Choose how you want to add the customer.
+      </p>
+
+      <button
+        type="button"
+        (click)="selectMethod('DETAILS')"
+        class="mb-3 flex w-full items-center gap-4 rounded-xl border border-gray-200 p-4 text-left transition hover:border-indigo-500 hover:bg-indigo-50">
+        <span class="text-2xl">👤</span>
+        <span>
+          <span class="block font-semibold text-gray-900">
+            Enter Details
+          </span>
+          <span class="mt-1 block text-sm text-gray-500">
+            Add customer details manually
+          </span>
+        </span>
+      </button>
+
+      <button
+        type="button"
+        (click)="selectMethod('QR')"
+        class="flex w-full items-center gap-4 rounded-xl border border-gray-200 p-4 text-left transition hover:border-indigo-500 hover:bg-indigo-50">
+        <span class="text-2xl">▦</span>
+        <span>
+          <span class="block font-semibold text-gray-900">
+            Entry by QR code
+          </span>
+          <span class="mt-1 block text-sm text-gray-500">
+            Add customer using QR code
+          </span>
+        </span>
+      </button>
+    </ng-container>
+
+    <!-- Step 2: Enter Mobile Number -->
+    <ng-container *ngIf="currentStep === 'MOBILE'">
+      <p class="mb-5 text-sm text-gray-500">
+        Enter the customer's mobile number to check whether
+        they already exist.
+      </p>
+
+      <label
+        for="mobileNumber"
+        class="mb-2 block text-sm font-medium text-gray-700">
+        Mobile Number
+      </label>
+
+      <div
+        class="flex items-center rounded-xl border border-gray-300 px-4 focus-within:border-indigo-500">
+        <span class="mr-3 text-gray-500">+91</span>
+
+        <input
+          id="mobileNumber"
+          type="tel"
+          inputmode="numeric"
+          maxlength="10"
+          autocomplete="tel-national"
+          [(ngModel)]="mobileNumber"
+          (ngModelChange)="onMobileNumberChange($event)"
+          placeholder="Enter 10-digit mobile number"
+          class="w-full py-3 text-gray-900 outline-none" />
+      </div>
+
+      <button
+        type="button"
+        (click)="continue()"
+        [disabled]="customerCheckLoading"
+        class="mt-5 w-full rounded-xl bg-indigo-600 px-4 py-3 font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60">
+        {{ customerCheckLoading ? 'Checking...' : 'Continue' }}
+      </button>
+    </ng-container>
+
+    <!-- Step 3: New Customer Form -->
+    <ng-container *ngIf="currentStep === 'NEW_CUSTOMER'">
+      <p class="mb-5 text-sm text-gray-500">
+        New customer detected. Enter their details to continue.
+      </p>
+
+      <!-- Name: Required -->
+      <div class="mb-5">
+        <label
+          for="newCustomerName"
+          class="mb-2 block text-sm font-medium text-gray-700">
+          Customer Name <span class="text-red-500">*</span>
+        </label>
+
+        <input
+          id="newCustomerName"
+          type="text"
+          [(ngModel)]="newCustomerName"
+          placeholder="Enter customer name"
+          maxlength="100"
+          autocomplete="name"
+          [disabled]="isCreatingCustomer"
+          class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 disabled:bg-gray-100" />
+      </div>
+
+      <!-- Email: Optional -->
+      <div class="mb-2">
+        <label
+          for="newCustomerEmail"
+          class="mb-2 block text-sm font-medium text-gray-700">
+          Email <span class="text-gray-400">(Optional)</span>
+        </label>
+
+        <input
+          id="newCustomerEmail"
+          type="email"
+          [(ngModel)]="newCustomerEmail"
+          placeholder="Enter email address"
+          autocomplete="email"
+          [disabled]="isCreatingCustomer"
+          class="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 disabled:bg-gray-100" />
+      </div>
+
+      <!-- Confirm with Loading Spinner -->
+      <button
+        type="button"
+        (click)="confirmNewCustomer()"
+        [disabled]="isCreatingCustomer"
+        class="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-3 font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-70">
+
+        <!-- Spinner -->
+        <svg
+          *ngIf="isCreatingCustomer"
+          class="h-5 w-5 animate-spin"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24">
+
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4">
+          </circle>
+
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z">
+          </path>
+        </svg>
+
+        <span>
+          {{ isCreatingCustomer ? 'Creating Customer...' : 'Confirm' }}
+        </span>
+      </button>
+    </ng-container>
+
+    <!-- Step 4: Existing Customer and Services -->
+    <ng-container *ngIf="currentStep === 'SERVICES'">
+      <p class="mb-5 text-sm text-gray-500">
+        Confirm customer details and select services.
+      </p>
+
+      <!-- Customer Name -->
+      <div class="customer-field">
+        <label for="customerName" class="customer-label">
+          Customer Name
+        </label>
+
+        <div class="customer-card">
+          <div class="customer-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8">
+              <circle cx="12" cy="8" r="4" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4.5 20a7.5 7.5 0 0 1 15 0" />
+            </svg>
+          </div>
+
+          <div class="customer-info">
+            <span class="customer-caption">CUSTOMER</span>
+            <input
+              id="customerName"
+              type="text"
+              [value]="customerName"
+              readonly
+              placeholder="Customer name will appear here"
+              class="customer-name-input" />
+          </div>
+
+          <div class="customer-verified" title="Verified">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m5 12 4 4L19 6" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Number: Read Only -->
+      <label
+        for="confirmedMobile"
+        class="mb-2 block text-sm font-medium text-gray-700">
+        Mobile Number
+      </label>
+
+      <input
+        id="confirmedMobile"
+        type="text"
+        [value]="'+91 ' + mobileNumber"
+        readonly
+        class="mb-5 w-full rounded-xl border border-gray-300 bg-gray-100 px-4 py-3 text-gray-600 outline-none" />
+
+      <!-- Services -->
+      <h3 class="mb-3 font-semibold text-gray-900">
+        Select Services
+      </h3>
+
+      <div class="max-h-56 space-y-3 overflow-y-auto">
+        <label
+          *ngFor="let service of services"
+          class="flex cursor-pointer items-center gap-3 rounded-xl border border-gray-200 p-3 transition hover:border-indigo-500 hover:bg-indigo-50">
+          <input
+            type="checkbox"
+            [(ngModel)]="service.selected"
+            class="h-4 w-4 accent-indigo-600" />
+
+          <span class="text-sm font-medium text-gray-800">
+            {{ service.name }}
+          </span>
+        </label>
+      </div>
+
+      <!-- Submit -->
+      <button
+        type="button"
+        (click)="submitWalkIn()"
+        class="mt-6 w-full rounded-xl bg-indigo-600 px-4 py-3 font-semibold text-white transition hover:bg-indigo-700">
+        Confirm
+      </button>
+    </ng-container>
+
+  </div>
+</div>
+```

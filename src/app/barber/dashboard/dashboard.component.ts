@@ -76,7 +76,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // ADD EXTRA SERVICE POPUP
   showAddServicePopup: boolean = false;
 
-
+  // ADD WALK-IN POPUP
+  showAddWalkInPopup: boolean = false;
 
   constructor(
     private barberService: BarberService,
@@ -938,6 +939,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   closeAddServicePopup(): void {
     this.showAddServicePopup = false;
+  }
+
+  
+  // ==========================================
+  // ADD WALK-IN POPUP
+  // ==========================================
+
+  openAddWalkInPopup(): void {
+    this.showAddWalkInPopup = true;
+  }
+
+  closeAddWalkInPopup(): void {
+    this.showAddWalkInPopup = false;
   }
 
 

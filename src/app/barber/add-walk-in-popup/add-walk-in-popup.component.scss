@@ -1,0 +1,102 @@
+
+.customer-field {
+  margin-bottom: 1.25rem;
+}
+
+.customer-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.customer-card {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1rem;
+  border: 1px solid #c7d2fe;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.06);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: #a5b4fc;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+  }
+}
+
+.customer-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: #e0e7ff;
+  color: #4f46e5;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+.customer-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.customer-caption {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #6366f1;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.customer-name-input {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #1f2937;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: default;
+
+  &::placeholder {
+    color: #9ca3af;
+    font-size: 0.8125rem;
+    font-weight: 400;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+
+.customer-verified {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #16a34a;
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+}

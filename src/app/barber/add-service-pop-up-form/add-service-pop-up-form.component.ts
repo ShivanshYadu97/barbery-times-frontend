@@ -1,26 +1,35 @@
+
 import {
   Component,
   EventEmitter,
   Input,
   OnInit,
+  OnDestroy,
   Output
 } from '@angular/core';
 
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+
 import { CustomerService } from 'src/app/State/Customer/customer.service';
 
 import {
+  loadShopServices,
   addExtraServices,
   addExtraServicesSuccess,
   addExtraServicesFailure
 } from 'src/app/State/Customer/customer.action';
+
+import {
+  CustomerState
+} from 'src/app/State/Customer/customer.reducer';
 
 @Component({
   selector: 'app-add-service-pop-up-form',
   templateUrl: './add-service-pop-up-form.component.html',
   styleUrls: ['./add-service-pop-up-form.component.scss']
 })
-export class AddServicePopUpFormComponent implements OnInit {
+export class AddServicePopUpFormComponent implements OnInit, OnDestroy {
 
   @Input() shopId!: number;
   @Input() customerId!: number;
@@ -28,16 +37,9 @@ export class AddServicePopUpFormComponent implements OnInit {
 
   @Output() closePopup = new EventEmitter<void>();
 
-  // All active services
   services: any[] = [];
-
-  // Services available to add
   availableServices: any[] = [];
-
-  // Existing services from current queue
   existingServices: any[] = [];
-
-  // Selected service IDs
   selectedServiceIds: number[] = [];
 
   loading = false;
@@ -49,12 +51,26 @@ export class AddServicePopUpFormComponent implements OnInit {
   addingExtraServices = false;
   addExtraServicesError = '';
 
+  private storeSubscription?: Subscription;
+
   constructor(
     private customerService: CustomerService,
-    private store: Store
+    private store: Store<{ customer: CustomerState }>
   ) {}
 
   ngOnInit(): void {
+
+    // Store se active services ki state observe karo
+    this.storeSubscription = this.store
+      .select('customer')
+      .subscribe(state => {
+        this.services = state.services ?? [];
+        this.loading = state.servicesLoading;
+        this.error = state.servicesError ?? '';
+
+        this.filterAvailableServices();
+      });
+
     if (this.shopId && this.customerId) {
       this.loadServices();
       this.loadExistingServices();
@@ -67,26 +83,22 @@ export class AddServicePopUpFormComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.storeSubscription?.unsubscribe();
+  }
+
   // Load active shop services
   loadServices(): void {
     this.loading = true;
     this.error = '';
 
-    this.customerService
-      .getActiveServicesByShop(this.shopId)
-      .subscribe({
-        next: (data) => {
-          this.services = data || [];
-          this.filterAvailableServices();
-          this.loading = false;
-        },
-        error: (error) => {
-          console.error('Failed to load active services:', error);
+    // NgRx loading action
+    this.store.dispatch(
+      loadShopServices({ shopId: this.shopId })
+    );
 
-          this.error = 'Unable to load services. Please try again.';
-          this.loading = false;
-        }
-      });
+    // Service API call karke success/failure action dispatch karegi
+    this.customerService.getActiveServicesByShop(this.shopId);
   }
 
   // Load existing queue services
@@ -135,7 +147,6 @@ export class AddServicePopUpFormComponent implements OnInit {
       return serviceName && !existingServiceNames.has(serviceName);
     });
 
-    // Remove selections that are no longer available
     const availableIds = new Set(
       this.availableServices.map(service => Number(service.id))
     );
@@ -214,7 +225,6 @@ export class AddServicePopUpFormComponent implements OnInit {
 
     const serviceIds = [...this.selectedServiceIds];
 
-    // Dispatch request action
     this.store.dispatch(
       addExtraServices({
         queueId: this.queueId,
@@ -222,7 +232,7 @@ export class AddServicePopUpFormComponent implements OnInit {
       })
     );
 
-    // Call backend directly because NgRx Effects are not being used
+    // Existing API pattern unchanged
     this.customerService
       .addExtraServices(this.queueId, serviceIds)
       .subscribe({
@@ -233,10 +243,7 @@ export class AddServicePopUpFormComponent implements OnInit {
 
           this.addingExtraServices = false;
 
-          // Refresh existing service details
           this.loadExistingServices();
-
-          // Close popup after success
           this.close();
         },
         error: (error) => {

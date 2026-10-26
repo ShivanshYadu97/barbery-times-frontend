@@ -310,7 +310,7 @@
 </section>
 
 <!-- Add Walk-in -->
-<button type="button"
+<button type="button" (click)="openAddWalkInPopup()"
     class="mt-4 flex w-full items-center justify-center gap-3 rounded-xl bg-yellow-400 px-4 py-4 text-base font-bold text-amber-900 shadow-sm transition hover:bg-amber-300 active:scale-[0.99] md:mt-6 md:rounded-2xl md:py-5 md:text-lg">
     <span class="flex h-7 w-7 items-center justify-center rounded-full bg-amber-900/10 text-xl font-normal">
         +
@@ -446,4 +446,11 @@
         </button>
 
     </div>
+</section>
+
+<!-- Add Walk-in Popup -->
+
+<section>
+    <app-add-walk-in-popup *ngIf="showAddWalkInPopup" (closePopup)="closeAddWalkInPopup()">
+    </app-add-walk-in-popup>
 </section>
