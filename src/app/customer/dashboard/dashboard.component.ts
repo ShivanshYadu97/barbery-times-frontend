@@ -1,13 +1,17 @@
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { interval, Subscription } from 'rxjs';
 
 import { CustomerService } from 'src/app/State/Customer/customer.service';
+import { TestingService } from 'src/app/State/Customer/testing.service';
+
 import {
   loadMyQueue,
   loadMyQueueSuccess,
   loadMyQueueFailure
 } from 'src/app/State/Customer/customer.action';
+
 import { CustomerState } from 'src/app/State/Customer/customer.reducer';
 
 @Component({
@@ -17,10 +21,14 @@ import { CustomerState } from 'src/app/State/Customer/customer.reducer';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
-  // Temporary testing IDs
-  // Later these will come from logged-in customer/shop
-  shopId = 1;
-  customerId = 2;
+  // Testing IDs are managed centrally by TestingService
+  get shopId(): number {
+    return this.testingService.shopId;
+  }
+
+  get customerId(): number {
+    return this.testingService.customerId;
+  }
 
   queue: any = null;
 
@@ -34,7 +42,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private customerService: CustomerService,
-    private store: Store<{ customer: CustomerState }>
+    private store: Store<{ customer: CustomerState }>,
+    private testingService: TestingService
   ) {}
 
   ngOnInit(): void {
